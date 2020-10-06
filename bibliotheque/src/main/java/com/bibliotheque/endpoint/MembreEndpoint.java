@@ -129,6 +129,7 @@ public class MembreEndpoint {
         if (savedMembreEntity == null) {
             serviceStatus.setStatusCode("CONFLICT");
             serviceStatus.setMessage("Exception while adding Entity");
+
         } else {
 
             BeanUtils.copyProperties(savedMembreEntity,newMembreType);

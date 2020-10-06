@@ -20,21 +20,14 @@ public class LivreEntityServiceImpl implements LivreEntityService {
     public LivreEntityServiceImpl() {
     }
 
-  //  @Autowired
-  //  public LivreEntityServiceImpl(LivreEntityRepository repository) {
-  //      this.repository = repository;
-  //  }
-
 
     @Override
     public LivreEntity getLivreById(int id) {
-
            return this.repository.findById(id);
     }
 
     @Override
     public LivreEntity getLivreByTitle(String titre) {
-
         return this.repository.findByTitre(titre);
     }
 

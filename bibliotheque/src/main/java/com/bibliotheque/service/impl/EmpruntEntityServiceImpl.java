@@ -25,7 +25,6 @@ public class EmpruntEntityServiceImpl implements EmpruntEntityService {
 
     @Override
     public EmpruntEntity getEmpruntById(int id) {
-
         return this.repository.findById(id);
     }
 
