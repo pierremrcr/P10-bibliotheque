@@ -1,11 +1,12 @@
 package com.bibliotheque.endpoint;
 
+
+
 import com.bibliotheque.entity.ReservationEntity;
 import com.bibliotheque.gs_ws.*;
 import com.bibliotheque.service.contract.ReservationEntityService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -14,11 +15,10 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
+
+import java.util.*;
+
+
 
 @Endpoint
 public class ReservationEndpoint {
@@ -28,7 +28,6 @@ public class ReservationEndpoint {
     private ReservationEntityService reservationEntityService;
 
     public ReservationEndpoint(){
-
     }
 
     @Autowired
@@ -48,11 +47,11 @@ public class ReservationEndpoint {
             ReservationType reservationType = new ReservationType();
             GregorianCalendar calendar = new GregorianCalendar();
 
-            calendar.setTime(entity.getDateResaDisponible());
+            calendar.setTime(entity.getDateResa());
             XMLGregorianCalendar dateDemandeDeResa = DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
 
             reservationType.setId(entity.getId());
-            reservationType.setDateResaDisponible(dateDemandeDeResa);
+            reservationType.setDateResa(dateDemandeDeResa);
             reservationType.setLivreid(entity.getLivreId());
             reservationType.setNumPositionResa(entity.getNumPositionResa());
             reservationType.setStatut(entity.getStatut());
@@ -67,7 +66,7 @@ public class ReservationEndpoint {
     }
 
 
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getListReservationByOuvrageIdRequest")
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getListReservationByLivreIdRequest")
     @ResponsePayload
     public GetListReservationByLivreIdResponse getListReservationByOuvrageId(@RequestPayload GetListReservationByLivreIdRequest request) throws DatatypeConfigurationException {
         GetListReservationByLivreIdResponse response = new GetListReservationByLivreIdResponse();
@@ -79,11 +78,11 @@ public class ReservationEndpoint {
             ReservationType reservationType = new ReservationType();
             GregorianCalendar calendar = new GregorianCalendar();
 
-            calendar.setTime(entity.getDateResaDisponible());
+            calendar.setTime(entity.getDateResa());
             XMLGregorianCalendar dateDemandeDeResa = DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
 
             reservationType.setId(entity.getId());
-            reservationType.setDateResaDisponible(dateDemandeDeResa);
+            reservationType.setDateResa(dateDemandeDeResa);
             reservationType.setLivreid(entity.getLivreId());
             reservationType.setNumPositionResa(entity.getNumPositionResa());
             reservationType.setStatut(entity.getStatut());
@@ -108,11 +107,11 @@ public class ReservationEndpoint {
             ReservationType reservationType = new ReservationType();
             GregorianCalendar calendar = new GregorianCalendar();
 
-            calendar.setTime(entity.getDateResaDisponible());
+            calendar.setTime(entity.getDateResa());
             XMLGregorianCalendar dateResaDisponible = DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
 
             reservationType.setId(entity.getId());
-            reservationType.setDateResaDisponible(dateResaDisponible);
+            reservationType.setDateResa(dateResaDisponible);
             reservationType.setLivreid(entity.getLivreId());
             reservationType.setNumPositionResa(entity.getNumPositionResa());
             reservationType.setStatut(entity.getStatut());
@@ -128,29 +127,36 @@ public class ReservationEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addReservationRequest")
     @ResponsePayload
-    public AddReservationResponse addReservationResponse(@RequestPayload  AddReservationRequest request) throws DatatypeConfigurationException, ParseException {
+    public AddReservationResponse addReservationResponse(@RequestPayload  AddReservationRequest request) throws DatatypeConfigurationException {
         AddReservationResponse response = new AddReservationResponse();
         ReservationType reservationType = new ReservationType();
         ReservationEntity reservationEntity = new ReservationEntity();
         ServiceStatus serviceStatus = new ServiceStatus();
+        GregorianCalendar dateResa = new GregorianCalendar();
+        Date today = Calendar.getInstance().getTime();
+        dateResa.setTime(today);
+        XMLGregorianCalendar dateResaConverted = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateResa);
+        reservationType.setDateResa(dateResaConverted);
+        reservationEntity.setDateResa(today);
 
-        BeanUtils.copyProperties(request.getReservationType(), reservationEntity);
+        reservationEntity.setLivreId(request.getReservationType().getLivreid());
+        reservationEntity.setMembreid(request.getReservationType().getMembreid());
+        reservationEntity.setStatut(request.getReservationType().getStatut());
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        reservationEntity.setDateResaDisponible(dateFormat.parse(request.getReservationType().getDateResaDisponible().toString()));
+        ReservationEntity savedReservationEntity = reservationEntityService.addReservation(reservationEntity);
 
-        try {
-            ReservationEntity savedReservationEntity = reservationEntityService.addReservation(reservationEntity);
+
+        if(savedReservationEntity == null) {
+
+            serviceStatus.setStatusCode("CONFLICT");
+            serviceStatus.setMessage("Exception while adding Entity");
+
+        } else {
+
             BeanUtils.copyProperties(savedReservationEntity, reservationType);
-
             serviceStatus.setStatusCode("SUCCESS");
             serviceStatus.setMessage("Content Added Successfully");
 
-        } catch (DataIntegrityViolationException pEX) {
-            serviceStatus.setStatusCode("CONFLICT");
-            serviceStatus.setMessage("Exception while adding Entity");
-        } catch (Exception pEX) {
-            pEX.printStackTrace();
         }
 
         response.setReservationType(reservationType);
@@ -161,3 +167,5 @@ public class ReservationEndpoint {
 
 
 }
+
+

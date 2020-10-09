@@ -126,7 +126,7 @@ public class EmpruntEndpoint {
         empruntEntity.setDate_debut(today);
         empruntEntity.setDate_fin(addDays(today,28));
 
-        //On récupère les données de la requête que l'on copie dans un objet EmpruntEntity
+        //On récupère les données de la requête que l'on copie dans l'objet EmpruntEntity
         BeanUtils.copyProperties(request.getEmpruntType(), empruntEntity);
 
         EmpruntEntity savedEmpruntEntity = empruntEntityService.addEmprunt(empruntEntity);

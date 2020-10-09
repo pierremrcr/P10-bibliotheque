@@ -8,8 +8,10 @@ import java.util.Date;
 @Table(name = "reservation")
 public class ReservationEntity implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "date_resa")
@@ -51,12 +53,12 @@ public class ReservationEntity implements Serializable {
         this.id = id;
     }
 
-    public Date getDateResaDisponible() {
+    public Date getDateResa() {
         return dateResa;
     }
 
-    public void setDateResaDisponible(Date dateResaDisponible) {
-        this.dateResa = dateResaDisponible;
+    public void setDateResa(Date dateResa) {
+        this.dateResa = dateResa;
     }
 
     public Integer getNumPositionResa() {
