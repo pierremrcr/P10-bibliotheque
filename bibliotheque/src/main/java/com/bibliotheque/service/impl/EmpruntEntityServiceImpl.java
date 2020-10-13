@@ -2,6 +2,7 @@ package com.bibliotheque.service.impl;
 
 import com.bibliotheque.entity.EmpruntEntity;
 import com.bibliotheque.entity.ExemplaireEntity;
+import com.bibliotheque.entity.MembreEntity;
 import com.bibliotheque.repository.EmpruntEntityRepository;
 import com.bibliotheque.repository.ExemplaireEntityRepository;
 import com.bibliotheque.service.contract.EmpruntEntityService;
@@ -93,6 +94,8 @@ public class EmpruntEntityServiceImpl implements EmpruntEntityService {
             return false;
         }
     }
+
+
 }
 
 

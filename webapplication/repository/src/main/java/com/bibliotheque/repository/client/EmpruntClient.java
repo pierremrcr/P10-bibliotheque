@@ -32,6 +32,7 @@ public class EmpruntClient extends WebServiceGatewaySupport {
     }
 
 
+
     public UpdateEmpruntResponse updateEmprunt(EmpruntType empruntType) {
         UpdateEmpruntRequest request = new UpdateEmpruntRequest();
         request.setEmpruntType(empruntType);

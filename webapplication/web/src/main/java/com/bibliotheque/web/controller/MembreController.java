@@ -20,7 +20,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -46,12 +48,15 @@ public class MembreController {
     }
 
     @RequestMapping(value="/detail-membre", method= RequestMethod.GET)
-    public String membreDetail(Model model, HttpSession session, MembreType membreType, @RequestParam(name="compteId") int id){
+    public String membreDetail(Model model, HttpSession session, MembreType membreType, @RequestParam(name="compteId") int id) throws ParseException {
 
         membreType = this.service.membreById(id);
         List<LivreType> listeLivres = this.livreService.getAllLivresEmpruntes(id);
         List<EmpruntType> listeEmprunts = membreType.getListeEmprunts();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        model.addAttribute("dateFormat", dateFormat);
+        Date dateToday = dateFormat.parse(dateFormat.format(new Date()));
+        model.addAttribute("dateToday", dateToday);
         model.addAttribute("membreType", membreType);
         model.addAttribute("dateFormat", dateFormat);
         model.addAttribute("listeLivres", listeLivres);

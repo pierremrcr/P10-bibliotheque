@@ -8,8 +8,8 @@ import livres.wsdl.ExemplaireType;
 import livres.wsdl.LivreType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 
 @Service
 public class EmpruntService {
@@ -67,6 +67,7 @@ public class EmpruntService {
 
         return this.repository.getAllEmpruntsWhereDateFinIsBeforeDateToday();
     }
+
 
     public String updateEmprunt(EmpruntType empruntType) {
 
