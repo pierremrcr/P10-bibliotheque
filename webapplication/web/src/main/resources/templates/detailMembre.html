@@ -128,17 +128,27 @@
 
                                 <th:block th:if="${!emprunt.isTermine()}">
 
-
                                     <td th:text="${emprunt.getExemplaireEntity().getLivre().getTitre()}"></td>
                                     <td th:text="${emprunt.getExemplaireEntity().getLivre().getAuteur()}"></td>
                                     <td th:text="${dateFormat.format(dateFormat.parse(emprunt.getDateDebut().toString()))}"></td>
                                     <td th:text="${dateFormat.format(dateFormat.parse(emprunt.getDateFin().toString()))}"></td>
 
                                     <th:block th:if="${!emprunt.isProlongation()}">
+                                        <th:block th:if="${dateFormat.parse(emprunt.getDateFin().toString()).after(dateToday)
+                                    || dateFormat.parse(emprunt.getDateFin().toString()).equals(dateToday)}">
                                         <td>
                                             <p><a class="btn btn-outline-primary" href="#" th:href="@{/prolongation(empruntId=${emprunt.getId()})}">PROLONGER</a></p>
                                         </td>
                                     </th:block>
+
+                                    <th:block th:if="${!emprunt.isProlongation()}">
+                                        <th:block th:if="${dateFormat.parse(emprunt.getDateFin().toString()).before(dateToday)}">
+                                            <td style="width: 30%">
+                                                <p>Vous avez dépassé la date de fin d'emprunt, vous ne pouvez pas prolongé l'emprunt pour cet exemplaire.</p>
+                                            </td>
+                                        </th:block>
+                                    </th:block>
+
 
                                     <th:block th:if="${emprunt.isProlongation()}">
                                         <td>
@@ -157,9 +167,9 @@
 
                             </tbody>
 
+
+
                         </th:block>
-
-
 
                     </table>
 
