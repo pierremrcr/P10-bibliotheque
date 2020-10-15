@@ -1,6 +1,7 @@
 package com.bibliotheque.service.contract;
 
 import com.bibliotheque.entity.EmpruntEntity;
+import com.bibliotheque.entity.MembreEntity;
 
 import java.util.List;
 
