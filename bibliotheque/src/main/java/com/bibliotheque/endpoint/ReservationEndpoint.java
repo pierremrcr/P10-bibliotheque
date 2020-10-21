@@ -23,6 +23,8 @@ import java.util.*;
 @Endpoint
 public class ReservationEndpoint {
 
+
+
     public static final String NAMESPACE_URI = "http://www.bibliotheque.com/livres-ws";
 
     private ReservationEntityService reservationEntityService;
@@ -34,6 +36,8 @@ public class ReservationEndpoint {
     public ReservationEndpoint(ReservationEntityService reservationEntityService){
         this.reservationEntityService = reservationEntityService;
     }
+
+
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllReservationRequest")
     @ResponsePayload
@@ -116,6 +120,7 @@ public class ReservationEndpoint {
             reservationType.setNumPositionResa(entity.getNumPositionResa());
             reservationType.setStatut(entity.getStatut());
             reservationType.setMembreid(entity.getMembreid());
+
 
             reservationTypeList.add(reservationType);
         }

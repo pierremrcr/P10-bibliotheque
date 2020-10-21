@@ -2,7 +2,7 @@
 // Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.11 
 // Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2020.10.12 à 07:59:15 PM CEST 
+// Généré le : 2020.10.20 à 03:37:44 PM CEST 
 //
 
 
@@ -522,6 +522,110 @@ public class ObjectFactory {
      */
     public GetSearchByKeywordResponse createGetSearchByKeywordResponse() {
         return new GetSearchByKeywordResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetAllReservationRequest }
+     * 
+     */
+    public GetAllReservationRequest createGetAllReservationRequest() {
+        return new GetAllReservationRequest();
+    }
+
+    /**
+     * Create an instance of {@link GetAllReservationResponse }
+     * 
+     */
+    public GetAllReservationResponse createGetAllReservationResponse() {
+        return new GetAllReservationResponse();
+    }
+
+    /**
+     * Create an instance of {@link ReservationType }
+     * 
+     */
+    public ReservationType createReservationType() {
+        return new ReservationType();
+    }
+
+    /**
+     * Create an instance of {@link GetListReservationByLivreIdRequest }
+     * 
+     */
+    public GetListReservationByLivreIdRequest createGetListReservationByLivreIdRequest() {
+        return new GetListReservationByLivreIdRequest();
+    }
+
+    /**
+     * Create an instance of {@link GetListReservationByLivreIdResponse }
+     * 
+     */
+    public GetListReservationByLivreIdResponse createGetListReservationByLivreIdResponse() {
+        return new GetListReservationByLivreIdResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetListReservationByCompteIdRequest }
+     * 
+     */
+    public GetListReservationByCompteIdRequest createGetListReservationByCompteIdRequest() {
+        return new GetListReservationByCompteIdRequest();
+    }
+
+    /**
+     * Create an instance of {@link GetListReservationByCompteIdResponse }
+     * 
+     */
+    public GetListReservationByCompteIdResponse createGetListReservationByCompteIdResponse() {
+        return new GetListReservationByCompteIdResponse();
+    }
+
+    /**
+     * Create an instance of {@link DeleteReservationRequest }
+     * 
+     */
+    public DeleteReservationRequest createDeleteReservationRequest() {
+        return new DeleteReservationRequest();
+    }
+
+    /**
+     * Create an instance of {@link DeleteReservationResponse }
+     * 
+     */
+    public DeleteReservationResponse createDeleteReservationResponse() {
+        return new DeleteReservationResponse();
+    }
+
+    /**
+     * Create an instance of {@link AddReservationRequest }
+     * 
+     */
+    public AddReservationRequest createAddReservationRequest() {
+        return new AddReservationRequest();
+    }
+
+    /**
+     * Create an instance of {@link AddReservationResponse }
+     * 
+     */
+    public AddReservationResponse createAddReservationResponse() {
+        return new AddReservationResponse();
+    }
+
+    /**
+     * Create an instance of {@link UpdateReservationRequest }
+     * 
+     */
+    public UpdateReservationRequest createUpdateReservationRequest() {
+        return new UpdateReservationRequest();
+    }
+
+    /**
+     * Create an instance of {@link UpdateReservationResponse }
+     * 
+     */
+    public UpdateReservationResponse createUpdateReservationResponse() {
+        return new UpdateReservationResponse();
     }
 
 }

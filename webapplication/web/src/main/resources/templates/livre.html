@@ -63,6 +63,13 @@
                     </td>
                 </th:block>
 
+                <th:block th:if="${exemplairesDispo.size() == 0 && session.user != null}">
+                    <td>
+                        <p>Ce livre n'est pas disponible pour le moment cependant vous pouvez faire une demande de réservation</p>
+                        <p><a class="btn btn-outline-primary" href="#" th:href="@{/addReservation(livreId=${livre.getId()}, compteId=${session.user.getId()})}">Réserver ce livre</a></p>
+                    </td>
+                </th:block>
+
 
                 <script type="text/javascript" src="http://localhost:8080/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
 

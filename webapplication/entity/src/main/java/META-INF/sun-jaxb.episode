@@ -5,7 +5,7 @@
 Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.11 
 Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-Généré le : 2020.10.12 à 07:59:15 PM CEST 
+Généré le : 2020.10.20 à 03:37:44 PM CEST 
 
   -->
   <bindings xmlns:tns="http://www.bibliotheque.com/livres-ws" if-exists="true" scd="x-schema::tns">
@@ -194,6 +194,45 @@ Généré le : 2020.10.12 à 07:59:15 PM CEST
     </bindings>
     <bindings if-exists="true" scd="tns:getSearchByKeywordResponse">
       <class ref="livres.wsdl.GetSearchByKeywordResponse"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:getAllReservationRequest">
+      <class ref="livres.wsdl.GetAllReservationRequest"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:getAllReservationResponse">
+      <class ref="livres.wsdl.GetAllReservationResponse"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:reservationType">
+      <class ref="livres.wsdl.ReservationType"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:getListReservationByLivreIdRequest">
+      <class ref="livres.wsdl.GetListReservationByLivreIdRequest"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:getListReservationByLivreIdResponse">
+      <class ref="livres.wsdl.GetListReservationByLivreIdResponse"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:getListReservationByCompteIdRequest">
+      <class ref="livres.wsdl.GetListReservationByCompteIdRequest"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:getListReservationByCompteIdResponse">
+      <class ref="livres.wsdl.GetListReservationByCompteIdResponse"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:deleteReservationRequest">
+      <class ref="livres.wsdl.DeleteReservationRequest"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:deleteReservationResponse">
+      <class ref="livres.wsdl.DeleteReservationResponse"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:addReservationRequest">
+      <class ref="livres.wsdl.AddReservationRequest"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:addReservationResponse">
+      <class ref="livres.wsdl.AddReservationResponse"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:updateReservationRequest">
+      <class ref="livres.wsdl.UpdateReservationRequest"/>
+    </bindings>
+    <bindings if-exists="true" scd="tns:updateReservationResponse">
+      <class ref="livres.wsdl.UpdateReservationResponse"/>
     </bindings>
   </bindings>
 </bindings>

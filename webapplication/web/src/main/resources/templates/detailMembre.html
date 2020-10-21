@@ -168,6 +168,46 @@
                             </tbody>
 
 
+                        </th:block>
+
+                    </table>
+
+                </div>
+
+
+                <h3>Mes réservations</h3>
+
+
+                <div class="table-responsive">
+
+
+                    <table class="table table-hover table-border">
+
+                        <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Auteur</th>
+                            <th>Date de réservation</th>
+                            <th>Statut</th>
+                        </tr>
+                        </thead>
+
+
+
+                        <th:block th:each="reservation:${listeReservations}">
+
+                            <tbody>
+
+                            <tr>
+
+                                <td th:text="${reservation.getLivreEntity().getTitre()}"></td>
+                                <td th:text="${reservation.getLivreEntity().getAuteur()}"></td>
+                                <td th:text="${dateFormat.format(dateFormat.parse(reservation.getDateResa().toString()))}"></td>
+                                <td th:text="${reservation.getStatut()}"></td>
+
+                            </tr>
+
+                            </tbody>
 
                         </th:block>
 
@@ -175,17 +215,16 @@
 
                 </div>
 
-            </div>
-
-
-            <script type="text/javascript"
-                    src="http://localhost:8080/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
-
         </div>
 
     </div>
 
 </div>
+
+</div>
+
+<script type="text/javascript"
+        src="http://localhost:8080/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
 
 </body>
 

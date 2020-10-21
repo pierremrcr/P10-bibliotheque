@@ -30,8 +30,12 @@ public class ReservationEntity implements Serializable {
     private Integer membreid;
 
     @ManyToOne
+    @JoinColumn(name = "membreid", insertable = false, updatable = false)
+    private MembreEntity membreEntity;
+
+    @ManyToOne
     @JoinColumn(name = "livreid", insertable = false, updatable = false)
-    private LivreEntity livreReservation;
+    private LivreEntity livreEntity;
 
     public ReservationEntity(){
     }
@@ -42,7 +46,6 @@ public class ReservationEntity implements Serializable {
         this.statut = statut;
         this.livreId = livreId;
         this.membreid = membreid;
-        this.livreReservation = livreReservation;
     }
 
     public Integer getId() {
@@ -93,11 +96,20 @@ public class ReservationEntity implements Serializable {
         this.membreid = membreid;
     }
 
-    public LivreEntity getLivreReservation() {
-        return livreReservation;
+    public MembreEntity getMembreEntity() {
+        return membreEntity;
     }
 
-    public void setLivreReservation(LivreEntity livreReservation) {
-        this.livreReservation = livreReservation;
+    public void setMembreEntity(MembreEntity membreEntity) {
+        this.membreEntity = membreEntity;
     }
+
+    public LivreEntity getLivreEntity() {
+        return livreEntity;
+    }
+
+    public void setLivreEntity(LivreEntity livreEntity) {
+        this.livreEntity = livreEntity;
+    }
+
 }

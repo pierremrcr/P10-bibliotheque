@@ -1,9 +1,6 @@
 package com.bibliotheque.endpoint;
 
-import com.bibliotheque.entity.EmpruntEntity;
-import com.bibliotheque.entity.ExemplaireEntity;
-import com.bibliotheque.entity.LivreEntity;
-import com.bibliotheque.entity.MembreEntity;
+import com.bibliotheque.entity.*;
 import com.bibliotheque.gs_ws.*;
 import com.bibliotheque.service.contract.MembreEntityService;
 import org.springframework.beans.BeanUtils;
@@ -71,6 +68,25 @@ public class MembreEndpoint {
             exemplaireType.setLivre(livreType);
 
         }
+
+        for(ReservationEntity reservationEntity : membreEntity.getListeReservations()){
+            ReservationType reservationType = new ReservationType();
+            LivreType livreType = new LivreType();
+            GregorianCalendar dateResa = new GregorianCalendar();
+            dateResa.setTime(reservationEntity.getDateResa());
+            XMLGregorianCalendar dateResaConverted = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateResa);
+            reservationType.setDateResa(dateResaConverted);
+            BeanUtils.copyProperties(reservationEntity, reservationType);
+
+            membreType.getListeReservation().add(reservationType);
+
+            LivreEntity livreEntity = reservationEntity.getLivreEntity();
+            BeanUtils.copyProperties(livreEntity, livreType);
+            reservationType.setLivreEntity(livreType);
+
+
+        }
+
 
         BeanUtils.copyProperties(membreEntity, membreType);
         response.setMembreType(membreType);
