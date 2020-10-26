@@ -143,10 +143,11 @@ public class ReservationEndpoint {
         XMLGregorianCalendar dateResaConverted = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateResa);
         reservationType.setDateResa(dateResaConverted);
         reservationEntity.setDateResa(today);
+        reservationType.setStatut("réservé");
 
         reservationEntity.setLivreId(request.getReservationType().getLivreid());
         reservationEntity.setMembreid(request.getReservationType().getMembreid());
-        reservationEntity.setStatut(request.getReservationType().getStatut());
+        reservationEntity.setStatut("réservé");
 
         ReservationEntity savedReservationEntity = reservationEntityService.addReservation(reservationEntity);
 

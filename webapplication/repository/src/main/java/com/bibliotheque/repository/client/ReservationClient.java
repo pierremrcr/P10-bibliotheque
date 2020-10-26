@@ -20,4 +20,10 @@ public class ReservationClient extends WebServiceGatewaySupport {
         request.setMembreid(membreId);
         return (GetListReservationByCompteIdResponse) getWebServiceTemplate().marshalSendAndReceive(request);
     }
+
+    public GetListReservationByLivreIdResponse getReservationByLivreId(int livreId){
+        GetListReservationByLivreIdRequest request = new GetListReservationByLivreIdRequest();
+        request.setLivreid(livreId);
+        return (GetListReservationByLivreIdResponse) getWebServiceTemplate().marshalSendAndReceive(request);
+    }
 }

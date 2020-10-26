@@ -1,5 +1,6 @@
 package com.bibliotheque.batch.config;
 
+import com.bibliotheque.batch.batch.BatchReservation;
 import com.bibliotheque.batch.batch.MailItemProcessor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -27,6 +28,9 @@ public class BatchConfig {
     @Autowired
     private MailItemProcessor mailItemProcessor;
 
+    @Autowired
+    private BatchReservation batchReservation;
+
     @Bean
     public MailItemProcessor processor(){
         return new MailItemProcessor();
@@ -41,12 +45,28 @@ public class BatchConfig {
                 .build();
     }
 
+    protected Step processorBatchReservation(){
+        return stepBuilderFactory
+                .get("batchReservation")
+                .tasklet(batchReservation)
+                .build();
+    }
+
     @Bean
     public Job mailJob() {
         return jobBuilderFactory
                 .get("mailJob")
                 .incrementer(new RunIdIncrementer())
                 .start(processorMail())
+                .build();
+    }
+
+    @Bean
+    public Job batchReservationJob(){
+        return jobBuilderFactory
+                .get("batchReservationJob")
+                .incrementer(new RunIdIncrementer())
+                .start(processorBatchReservation())
                 .build();
     }
 }

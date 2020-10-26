@@ -140,6 +140,7 @@
                                             <p><a class="btn btn-outline-primary" href="#" th:href="@{/prolongation(empruntId=${emprunt.getId()})}">PROLONGER</a></p>
                                         </td>
                                     </th:block>
+                                    </th:block>
 
                                     <th:block th:if="${!emprunt.isProlongation()}">
                                         <th:block th:if="${dateFormat.parse(emprunt.getDateFin().toString()).before(dateToday)}">
@@ -164,6 +165,7 @@
 
 
                             </tr>
+
 
                             </tbody>
 

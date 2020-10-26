@@ -75,6 +75,38 @@ public class EmpruntEndpoint {
         return response;
     }
 
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllEmpruntsByLivreIdRequest")
+    @ResponsePayload
+    public GetAllEmpruntsByLivreIdResponse getAllEmpruntsByLivreId(@RequestPayload GetAllEmpruntsByLivreIdRequest request) throws DatatypeConfigurationException{
+        GetAllEmpruntsByLivreIdResponse response = new GetAllEmpruntsByLivreIdResponse();
+        List<EmpruntType> empruntTypeList = new ArrayList<EmpruntType>();
+        List<EmpruntEntity> empruntEntityList = empruntEntityService.getAllEmpruntsByLivreId(request.getLivreId());
+
+        for (EmpruntEntity entity : empruntEntityList) {
+            EmpruntType empruntType = new EmpruntType();
+
+            GregorianCalendar dateDebut = new GregorianCalendar();
+            GregorianCalendar dateFin = new GregorianCalendar();
+            dateDebut.setTime(entity.getDate_debut());
+            dateFin.setTime(entity.getDate_fin());
+            XMLGregorianCalendar dateConvertedDebut = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateDebut);
+            XMLGregorianCalendar dateConvertedFin = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateFin);
+
+            empruntType.setDateDebut(dateConvertedDebut);
+            empruntType.setDateFin(dateConvertedFin);
+            empruntType.setId(entity.getId());
+            empruntType.setMembreid(entity.getMembreid());
+            empruntType.setExemplaireid(entity.getExemplaireid());
+            BeanUtils.copyProperties(entity, empruntType);
+            empruntTypeList.add(empruntType);
+        }
+
+        response.getListeEmpruntsByLivreId().addAll(empruntTypeList);
+
+        return response;
+    }
+
+
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllEmpruntsWhereDateFinIsBeforeDateTodayRequest")
     @ResponsePayload
@@ -305,6 +337,8 @@ public class EmpruntEndpoint {
         response.setServiceStatus(serviceStatus);
         return response;
     }
+
+
 
     public static Date addDays(Date date, int days) {
         Calendar cal = Calendar.getInstance();

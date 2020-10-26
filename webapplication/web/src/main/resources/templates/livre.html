@@ -3,6 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout">
 <head>
+
     <title>MicroLibrary</title>
 
     <link rel="stylesheet" type="text/css"
@@ -19,6 +20,7 @@
 
 
         <div class="row">
+
             <div class="col col-md-10">
 
                 <div class="table-responsive">
@@ -65,10 +67,74 @@
 
                 <th:block th:if="${exemplairesDispo.size() == 0 && session.user != null}">
                     <td>
-                        <p>Ce livre n'est pas disponible pour le moment cependant vous pouvez faire une demande de réservation</p>
-                        <p><a class="btn btn-outline-primary" href="#" th:href="@{/addReservation(livreId=${livre.getId()}, compteId=${session.user.getId()})}">Réserver ce livre</a></p>
+                        <p>Ce livre n'est pas disponible pour le moment</p>
                     </td>
                 </th:block>
+
+                <th:block th:if="${exemplairesDispo.size() == 0 && session.user != null
+                && livre.getListeExemplaires().size()*2 > listeReservation.size()
+                && !dejaEmprunte && !dejaReserve}">
+
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td style="vertical-align: middle" >
+                                <p th:text="'Cette ouvrage ne sera pas disponible avant le '
+                                        + ${dateRetour}">
+                                </p>
+
+                                <p>Vous pouvez réserver cet ouvrage</p>
+                                <p th:text="${listeReservation.size()} + ' personnes ont déjà réservé cet ouvrage'"></p>
+                                <p th:text="'Il reste encore ' + ${livre.getListeExemplaires().size() * 2 - listeReservation.size()}
+                                        + ' place(s) dans la liste d\'attente.'">
+                                </p>
+                            </td>
+
+                        <td>
+                            <p><a class="btn btn-outline-primary" href="#" th:href="@{/addReservation(livreId=${livre.getId()}, compteId=${session.user.getId()})}">Réserver ce livre</a></p>
+                        </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </th:block>
+
+                    <th:block th:if="${dejaReserve}">
+
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td style="vertical-align: middle" >
+                                    <h5>Vous avez déjà fait une demande de réservation pour cette ouvrage</h5></br>
+                                    <p style="text-align: center">
+                                        <a style="width: 45%" class="btn btn-warning" href="#" th:href="@{/detail-membre(compteId=${session.user.getId()})}">Consulter mes informations</a>
+                                    </p>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </th:block>
+
+                    <th:block th:if="${dejaEmprunte}">
+
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td style="vertical-align: middle" >
+                                    <h5>Vous avez déjà cet ouvrage en votre possession</h5></br>
+                                    <p style="text-align: center">
+                                        <a style="width: 40%" class="btn btn-warning" href="#" th:href="@{/detail-membre(compteId=${session.user.getId()})}">Consulter mes prêts</a>
+                                    </p>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </th:block>
 
 
                 <script type="text/javascript" src="http://localhost:8080/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>

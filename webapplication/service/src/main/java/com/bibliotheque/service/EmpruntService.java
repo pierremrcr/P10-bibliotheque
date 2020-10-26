@@ -8,6 +8,9 @@ import livres.wsdl.ExemplaireType;
 import livres.wsdl.LivreType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -86,6 +89,78 @@ public class EmpruntService {
     public String addEmprunt(EmpruntType empruntType) {
 
         return this.empruntRepository.addEmprunt(empruntType);
+    }
+
+    public List<EmpruntType> getAllEmpruntsByLivreId(int livreId){
+        return this.repository.getAllEmpruntsByLivreId(livreId);
+    }
+
+    public List<Long> joursRestantsEmprunt(List<EmpruntType> empruntTypeList) throws ParseException {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        List<Long> jourRestantEmprunt = new ArrayList<>();
+
+        Date toDay = new Date();
+
+        for (EmpruntType empruntType : empruntTypeList) {
+
+            String dateFinEmprunt = dateFormat.format(dateFormat.parse(empruntType.getDateFin().toString()));
+            Date dateFinEmpruntConverted = dateFormat.parse(dateFinEmprunt);
+
+            long UNE_HEURE = 60 * 60 * 1000L;
+            long numberDaysBeforeReturn =  (dateFinEmpruntConverted.getTime() - toDay.getTime() + UNE_HEURE) / (UNE_HEURE * 24);
+            jourRestantEmprunt.add(numberDaysBeforeReturn);
+        }
+
+        Collections.sort(jourRestantEmprunt);
+
+        return jourRestantEmprunt;
+    }
+
+    public List<Long> jourRestantsEmprunt(EmpruntType empruntType) throws ParseException {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        List<Long> jourRestantEmprunt = new ArrayList<>();
+
+        Date toDay = new Date();
+
+        String dateFinEmprunt = dateFormat.format(dateFormat.parse(empruntType.getDateFin().toString()));
+        Date dateFinEmpruntConverted = dateFormat.parse(dateFinEmprunt);
+
+        long UNE_HEURE = 60 * 60 * 1000L;
+        long numberDaysBeforeReturn =  (dateFinEmpruntConverted.getTime() - toDay.getTime() + UNE_HEURE) / (UNE_HEURE * 24);
+        jourRestantEmprunt.add(numberDaysBeforeReturn);
+
+
+        Collections.sort(jourRestantEmprunt);
+
+        return jourRestantEmprunt;
+    }
+
+    public List<EmpruntType> trieEmpruntsParDateDeFin(List<EmpruntType> empruntTypeList, List<Long> jourRestantEmprunt) throws ParseException {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        List<EmpruntType> trieEmpruntParDateDeFin = new ArrayList<>();
+
+        Date toDay = new Date();
+
+        for (Long jourRestant : jourRestantEmprunt) {
+            for (EmpruntType empruntType : empruntTypeList) {
+                String dateFinEmpruntStr = dateFormat.format(dateFormat.parse(empruntType.getDateFin().toString()));
+                Date dateFinEmprunt = dateFormat.parse(dateFinEmpruntStr);
+
+                long UNE_HEURE = 60 * 60 * 1000L;
+                long numberDaysBeforeReturn =  (dateFinEmprunt.getTime() - toDay.getTime() + UNE_HEURE) / (UNE_HEURE * 24);
+
+                if (jourRestant == numberDaysBeforeReturn) {
+                    trieEmpruntParDateDeFin.add(empruntType);
+                }
+            }
+        }
+
+        return trieEmpruntParDateDeFin;
     }
 
 }

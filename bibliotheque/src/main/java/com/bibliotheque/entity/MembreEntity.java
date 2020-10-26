@@ -46,7 +46,7 @@ public class MembreEntity implements Serializable {
     private String ville;
 
     @OneToMany(mappedBy = "membreEntity", fetch = FetchType.EAGER)
-    private List<EmpruntEntity> listeEmprunts;
+    private Set<EmpruntEntity> listeEmprunts;
 
     @OneToMany(mappedBy = "membreEntity", fetch = FetchType.EAGER)
     private Set<ReservationEntity> listeReservations;
@@ -126,11 +126,11 @@ public class MembreEntity implements Serializable {
         this.ville = ville;
     }
 
-    public List<EmpruntEntity> getListeEmprunts() {
+    public Set<EmpruntEntity> getListeEmprunts() {
         return listeEmprunts;
     }
 
-    public void setListeEmprunts(List<EmpruntEntity> listeEmprunts) {
+    public void setListeEmprunts(Set<EmpruntEntity> listeEmprunts) {
         this.listeEmprunts = listeEmprunts;
     }
 

@@ -58,4 +58,10 @@ public class EmpruntClient extends WebServiceGatewaySupport {
         request.setEmpruntType(empruntType);
         return (UpdateEmpruntTermineResponse) getWebServiceTemplate().marshalSendAndReceive(request);
     }
+
+    public GetAllEmpruntsByLivreIdResponse getAllEmpruntsByLivreId(int livreId){
+        GetAllEmpruntsByLivreIdRequest request = new GetAllEmpruntsByLivreIdRequest();
+        request.setLivreId(livreId);
+        return (GetAllEmpruntsByLivreIdResponse) getWebServiceTemplate().marshalSendAndReceive(request);
+    }
 }

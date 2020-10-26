@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="livreType" type="{http://www.bibliotheque.com/livres-ws}livreType" maxOccurs="unbounded"/&gt;
+ *         &lt;element name="listeEmpruntsByMembreId" type="{http://www.bibliotheque.com/livres-ws}empruntType" maxOccurs="unbounded"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -38,41 +38,41 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "livreType"
+    "listeEmpruntsByMembreId"
 })
-@XmlRootElement(name = "getSearchByKeywordResponse")
-public class GetSearchByKeywordResponse {
+@XmlRootElement(name = "getAllEmpruntsByMembreIdResponse")
+public class GetAllEmpruntsByMembreIdResponse {
 
     @XmlElement(required = true)
-    protected List<LivreType> livreType;
+    protected List<EmpruntType> listeEmpruntsByMembreId;
 
     /**
-     * Gets the value of the livreType property.
+     * Gets the value of the listeEmpruntsByMembreId property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the livreType property.
+     * This is why there is not a <CODE>set</CODE> method for the listeEmpruntsByMembreId property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getLivreType().add(newItem);
+     *    getListeEmpruntsByMembreId().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link LivreType }
+     * {@link EmpruntType }
      * 
      * 
      */
-    public List<LivreType> getLivreType() {
-        if (livreType == null) {
-            livreType = new ArrayList<LivreType>();
+    public List<EmpruntType> getListeEmpruntsByMembreId() {
+        if (listeEmpruntsByMembreId == null) {
+            listeEmpruntsByMembreId = new ArrayList<EmpruntType>();
         }
-        return this.livreType;
+        return this.listeEmpruntsByMembreId;
     }
 
 }

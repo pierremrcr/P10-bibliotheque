@@ -1,6 +1,7 @@
 package com.bibliotheque.batch.mail;
 
 import com.sun.mail.smtp.SMTPMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.mail.*;
@@ -12,6 +13,7 @@ import java.util.Properties;
 
 @Component
 public class SendingMail {
+
 
     public static void sendMessage(String subject, String text, String adresseMail) {
 
@@ -35,6 +37,7 @@ public class SendingMail {
         // 2 -> Création du message
         MimeMultipart content = new MimeMultipart("related");
         MimeBodyPart htmlPart = new MimeBodyPart();
+
 
         try {
 

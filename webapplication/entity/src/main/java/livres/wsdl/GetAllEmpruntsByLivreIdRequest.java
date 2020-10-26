@@ -10,7 +10,6 @@ package livres.wsdl;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -25,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="membreType" type="{http://www.bibliotheque.com/livres-ws}membreType"/&gt;
+ *         &lt;element name="livreId" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,36 +35,27 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "membreType"
+    "livreId"
 })
-@XmlRootElement(name = "addMembreRequest")
-public class AddMembreRequest {
+@XmlRootElement(name = "getAllEmpruntsByLivreIdRequest")
+public class GetAllEmpruntsByLivreIdRequest {
 
-    @XmlElement(required = true)
-    protected MembreType membreType;
+    protected int livreId;
 
     /**
-     * Obtient la valeur de la propriété membreType.
+     * Obtient la valeur de la propriété livreId.
      * 
-     * @return
-     *     possible object is
-     *     {@link MembreType }
-     *     
      */
-    public MembreType getMembreType() {
-        return membreType;
+    public int getLivreId() {
+        return livreId;
     }
 
     /**
-     * Définit la valeur de la propriété membreType.
+     * Définit la valeur de la propriété livreId.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link MembreType }
-     *     
      */
-    public void setMembreType(MembreType value) {
-        this.membreType = value;
+    public void setLivreId(int value) {
+        this.livreId = value;
     }
 
 }

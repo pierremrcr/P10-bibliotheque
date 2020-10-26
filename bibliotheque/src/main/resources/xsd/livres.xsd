@@ -413,6 +413,38 @@
         </xs:complexType>
     </xs:element>
 
+    <!-- ==== GET ALL EMPRUNT BY LIVRE ID ==== -->
+    <xs:element name="getAllEmpruntsByLivreIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="livreId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getAllEmpruntsByLivreIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="listeEmpruntsByLivreId" type="tns:empruntType" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- ==== GET ALL EMPRUNT BY MEMBRE ID ==== -->
+    <xs:element name="getAllEmpruntsByMembreIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="membreId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="getAllEmpruntsByMembreIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="listeEmpruntsByMembreId" type="tns:empruntType" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
 
 
     <!-- ==== GET ALL EMPRUNTS WHERE DATE FIN IS BEFORE DATE TODAY ==== -->
