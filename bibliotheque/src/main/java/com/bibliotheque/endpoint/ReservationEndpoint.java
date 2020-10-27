@@ -16,6 +16,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -51,11 +53,11 @@ public class ReservationEndpoint {
             ReservationType reservationType = new ReservationType();
             GregorianCalendar calendar = new GregorianCalendar();
 
-            calendar.setTime(entity.getDateResa());
+            calendar.setTime(entity.getDateDispo());
             XMLGregorianCalendar dateDemandeDeResa = DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
 
             reservationType.setId(entity.getId());
-            reservationType.setDateResa(dateDemandeDeResa);
+            reservationType.setDateDispo(dateDemandeDeResa);
             reservationType.setLivreid(entity.getLivreId());
             reservationType.setNumPositionResa(entity.getNumPositionResa());
             reservationType.setStatut(entity.getStatut());
@@ -82,11 +84,11 @@ public class ReservationEndpoint {
             ReservationType reservationType = new ReservationType();
             GregorianCalendar calendar = new GregorianCalendar();
 
-            calendar.setTime(entity.getDateResa());
+            calendar.setTime(entity.getDateDispo());
             XMLGregorianCalendar dateDemandeDeResa = DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
 
             reservationType.setId(entity.getId());
-            reservationType.setDateResa(dateDemandeDeResa);
+            reservationType.setDateDispo(dateDemandeDeResa);
             reservationType.setLivreid(entity.getLivreId());
             reservationType.setNumPositionResa(entity.getNumPositionResa());
             reservationType.setStatut(entity.getStatut());
@@ -111,11 +113,11 @@ public class ReservationEndpoint {
             ReservationType reservationType = new ReservationType();
             GregorianCalendar calendar = new GregorianCalendar();
 
-            calendar.setTime(entity.getDateResa());
+            calendar.setTime(entity.getDateDispo());
             XMLGregorianCalendar dateResaDisponible = DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
 
             reservationType.setId(entity.getId());
-            reservationType.setDateResa(dateResaDisponible);
+            reservationType.setDateDispo(dateResaDisponible);
             reservationType.setLivreid(entity.getLivreId());
             reservationType.setNumPositionResa(entity.getNumPositionResa());
             reservationType.setStatut(entity.getStatut());
@@ -132,19 +134,16 @@ public class ReservationEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addReservationRequest")
     @ResponsePayload
-    public AddReservationResponse addReservationResponse(@RequestPayload  AddReservationRequest request) throws DatatypeConfigurationException {
+    public AddReservationResponse addReservationResponse(@RequestPayload  AddReservationRequest request) throws DatatypeConfigurationException, ParseException {
         AddReservationResponse response = new AddReservationResponse();
         ReservationType reservationType = new ReservationType();
         ReservationEntity reservationEntity = new ReservationEntity();
         ServiceStatus serviceStatus = new ServiceStatus();
-        GregorianCalendar dateResa = new GregorianCalendar();
-        Date today = Calendar.getInstance().getTime();
-        dateResa.setTime(today);
-        XMLGregorianCalendar dateResaConverted = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateResa);
-        reservationType.setDateResa(dateResaConverted);
-        reservationEntity.setDateResa(today);
+        reservationType.setDateDispo(request.getReservationType().getDateDispo());
         reservationType.setStatut("réservé");
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateDispo = dateFormat.parse(request.getReservationType().getDateDispo().toString());
+        reservationEntity.setDateDispo(dateDispo);
         reservationEntity.setLivreId(request.getReservationType().getLivreid());
         reservationEntity.setMembreid(request.getReservationType().getMembreid());
         reservationEntity.setStatut("réservé");
@@ -171,7 +170,29 @@ public class ReservationEndpoint {
         return response;
     }
 
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteReservationRequest")
+    @ResponsePayload
+    public DeleteReservationResponse deleteReservation(@RequestPayload DeleteReservationRequest request){
+        DeleteReservationResponse response = new DeleteReservationResponse();
+        ServiceStatus serviceStatus = new ServiceStatus();
+
+        boolean flag = reservationEntityService.deleteReservation(request.getReservationId());
+
+        if (flag == false) {
+            serviceStatus.setStatusCode("FAIL");
+            serviceStatus.setMessage("Exception while deleting Entity id=" + request.getReservationId());
+        } else {
+            serviceStatus.setStatusCode("SUCCESS");
+            serviceStatus.setMessage("Content Deleted Successfully");
+        }
+
+        response.setServiceStatus(serviceStatus);
+        return response;
+    }
+
 
 }
+
+
 
 

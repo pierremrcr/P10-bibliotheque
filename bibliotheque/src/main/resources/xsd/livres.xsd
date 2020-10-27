@@ -602,7 +602,7 @@
     <xs:complexType name="reservationType">
         <xs:sequence>
             <xs:element name="id" type="xs:int"/>
-            <xs:element name="dateResa" type="xs:date"/>
+            <xs:element name="dateDispo" type="xs:date"/>
             <xs:element name="numPositionResa" type="xs:int"/>
             <xs:element name="statut" type="xs:string"/>
             <xs:element name="livreid" type="xs:int"/>

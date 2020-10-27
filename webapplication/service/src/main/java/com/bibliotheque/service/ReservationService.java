@@ -46,4 +46,12 @@ public class ReservationService {
 
         return reservationTypeList;
     }
+
+    public List<ReservationType> getAllReservations() {
+        return this.reservationRepository.getAllReservations();
+    }
+
+    public String deleteReservation(Integer reservationId) {
+        return this.reservationRepository.deleteReservation(reservationId);
+    }
 }

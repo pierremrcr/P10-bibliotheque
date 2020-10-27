@@ -118,26 +118,6 @@ public class EmpruntService {
         return jourRestantEmprunt;
     }
 
-    public List<Long> jourRestantsEmprunt(EmpruntType empruntType) throws ParseException {
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        List<Long> jourRestantEmprunt = new ArrayList<>();
-
-        Date toDay = new Date();
-
-        String dateFinEmprunt = dateFormat.format(dateFormat.parse(empruntType.getDateFin().toString()));
-        Date dateFinEmpruntConverted = dateFormat.parse(dateFinEmprunt);
-
-        long UNE_HEURE = 60 * 60 * 1000L;
-        long numberDaysBeforeReturn =  (dateFinEmpruntConverted.getTime() - toDay.getTime() + UNE_HEURE) / (UNE_HEURE * 24);
-        jourRestantEmprunt.add(numberDaysBeforeReturn);
-
-
-        Collections.sort(jourRestantEmprunt);
-
-        return jourRestantEmprunt;
-    }
 
     public List<EmpruntType> trieEmpruntsParDateDeFin(List<EmpruntType> empruntTypeList, List<Long> jourRestantEmprunt) throws ParseException {
 

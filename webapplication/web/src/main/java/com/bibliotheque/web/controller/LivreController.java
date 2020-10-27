@@ -57,7 +57,6 @@ public class LivreController {
 
         //Méthode qui permet de récupérer la liste des exemplaires dispo en fonction d'un livre et de ses exemplaires
         List<ExemplaireType> exemplairesListe = livreService.nombreExemplaireDispo(livre.getListeExemplaires());
-
         model.addAttribute("exemplairesDispo",exemplairesListe);
 
         for (ExemplaireType exemplaireType : exemplairesListe){
@@ -80,20 +79,28 @@ public class LivreController {
 
         List<ReservationType> listeReservationsEnCours = reservationService.reservationTypeListEnCours(reservationService.getReservationsByLivre(id));
 
-        Boolean dejaReservé = new Boolean(false);
-        Boolean dejaEmprunté = new Boolean(false);
+        boolean dejaReservé = false;
+        boolean dejaEmprunté = false;
 
-        for (ReservationType reservation : listeReservationsEnCours){
-            if(reservation.getMembreid() == user.getId()){
-                dejaReservé = true;
+        if(user != null){
+
+            for (ReservationType reservation : listeReservationsEnCours) {
+                if (reservation.getMembreid() == user.getId()) {
+                    dejaReservé = true;
+                }
             }
+
+            for (EmpruntType emprunt : listeEmpruntsByOuvrage) {
+                if (emprunt.getMembreid() == user.getId()) {
+                    dejaEmprunté = true;
+                }
+            }
+
+        } else {
+            dejaReservé = false;
+            dejaEmprunté =false;
         }
 
-        for(EmpruntType emprunt : listeEmpruntsByOuvrage){
-            if(emprunt.getMembreid() == user.getId()){
-                dejaEmprunté = true;
-            }
-        }
 
         model.addAttribute("livre", livre);
         model.addAttribute("dejaReserve", dejaReservé);

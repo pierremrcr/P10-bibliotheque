@@ -1,10 +1,7 @@
 package com.bibliotheque.repository.repository;
 
 import com.bibliotheque.repository.client.ReservationClient;
-import livres.wsdl.AddReservationResponse;
-import livres.wsdl.GetListReservationByCompteIdResponse;
-import livres.wsdl.GetListReservationByLivreIdResponse;
-import livres.wsdl.ReservationType;
+import livres.wsdl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -32,4 +29,13 @@ public class ReservationRepository {
     }
 
 
+    public List<ReservationType> getAllReservations() {
+        GetAllReservationResponse response = this.reservationClient.getAllReservations();
+        return response.getReservationList();
+    }
+
+    public String deleteReservation(Integer reservationId) {
+        DeleteReservationResponse response = this.reservationClient.deleteReservation(reservationId);
+        return response.getServiceStatus().getStatusCode();
+    }
 }

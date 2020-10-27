@@ -14,8 +14,8 @@ public class ReservationEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "date_resa")
-    private Date dateResa;
+    @Column(name = "date_dispo")
+    private Date dateDispo;
 
     @Column(name = "num_position_resa")
     private Integer numPositionResa;
@@ -40,13 +40,6 @@ public class ReservationEntity implements Serializable {
     public ReservationEntity(){
     }
 
-    public ReservationEntity(Date dateResa, Integer numPositionResa, String statut, Integer livreId, Integer membreid, LivreEntity livreReservation) {
-        this.dateResa = dateResa;
-        this.numPositionResa = numPositionResa;
-        this.statut = statut;
-        this.livreId = livreId;
-        this.membreid = membreid;
-    }
 
     public Integer getId() {
         return id;
@@ -56,12 +49,12 @@ public class ReservationEntity implements Serializable {
         this.id = id;
     }
 
-    public Date getDateResa() {
-        return dateResa;
+    public Date getDateDispo() {
+        return dateDispo;
     }
 
-    public void setDateResa(Date dateResa) {
-        this.dateResa = dateResa;
+    public void setDateDispo(Date dateDispo) {
+        this.dateDispo = dateDispo;
     }
 
     public Integer getNumPositionResa() {

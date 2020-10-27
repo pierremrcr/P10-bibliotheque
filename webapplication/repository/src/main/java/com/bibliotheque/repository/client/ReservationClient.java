@@ -26,4 +26,16 @@ public class ReservationClient extends WebServiceGatewaySupport {
         request.setLivreid(livreId);
         return (GetListReservationByLivreIdResponse) getWebServiceTemplate().marshalSendAndReceive(request);
     }
+
+    public GetAllReservationResponse getAllReservations() {
+        GetAllReservationRequest request = new GetAllReservationRequest();
+        return (GetAllReservationResponse) getWebServiceTemplate().marshalSendAndReceive(request);
+    }
+
+    public DeleteReservationResponse deleteReservation(int reservationId){
+        DeleteReservationRequest request = new DeleteReservationRequest();
+        request.setReservationId(reservationId);
+        return (DeleteReservationResponse) getWebServiceTemplate().marshalSendAndReceive(request);
+
+    }
 }

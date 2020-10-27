@@ -1,7 +1,5 @@
 package com.bibliotheque.service.impl;
 
-import com.bibliotheque.entity.LivreEntity;
-import com.bibliotheque.entity.MembreEntity;
 import com.bibliotheque.entity.ReservationEntity;
 import com.bibliotheque.repository.LivreEntityRepository;
 import com.bibliotheque.repository.ReservationEntityRepository;
@@ -67,11 +65,22 @@ public class ReservationEntityServiceImpl implements ReservationEntityService {
     }
 
     @Override
-    public void deleteReservation(int id) {
+    public boolean deleteReservation(int id) {
         try {
+            ReservationEntity reservationEntity = this.repository.findById(id);
+            List<ReservationEntity> listeReservations = getAllReservationsByLivre(reservationEntity.getLivreId());
+
+            for (ReservationEntity reservation : listeReservations) {
+                if (reservationEntity.getNumPositionResa() < reservation.getNumPositionResa() && reservationEntity.getNumPositionResa() != 0) {
+                    reservation.setNumPositionResa(reservation.getNumPositionResa() - 1);
+                    updateReservation(reservation);
+                }
+            }
             this.repository.deleteById(id);
+            return true;
         } catch (Exception e){
             e.printStackTrace();
+            return false;
         }
     }
 

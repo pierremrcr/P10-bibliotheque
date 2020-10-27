@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+
+
 @Endpoint
 public class MembreEndpoint {
 
@@ -73,9 +75,9 @@ public class MembreEndpoint {
             ReservationType reservationType = new ReservationType();
             LivreType livreType = new LivreType();
             GregorianCalendar dateResa = new GregorianCalendar();
-            dateResa.setTime(reservationEntity.getDateResa());
+            dateResa.setTime(reservationEntity.getDateDispo());
             XMLGregorianCalendar dateResaConverted = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateResa);
-            reservationType.setDateResa(dateResaConverted);
+            reservationType.setDateDispo(dateResaConverted);
             BeanUtils.copyProperties(reservationEntity, reservationType);
 
             membreType.getListeReservation().add(reservationType);
@@ -222,3 +224,5 @@ public class MembreEndpoint {
 
 
 }
+
+
