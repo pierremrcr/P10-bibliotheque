@@ -5,7 +5,7 @@
 
     <groupId>com.bibliotheque</groupId>
     <artifactId>webapplication</artifactId>
-    <version>1.0.0-RELEASE</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>webapplication</name>
     <packaging>pom</packaging>
 
