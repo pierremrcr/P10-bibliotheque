@@ -63,7 +63,7 @@ public class ReservationController {
         XMLGregorianCalendar dateDispo = DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
 
         reservation.setDateDispo(dateDispo);
-        reservation.setStatut("en cours");
+        reservation.setStatut("réservé");
         reservation.setLivreid(livreId);
         reservation.setMembreid(compteId);
         reservationService.addReservation(reservation);
@@ -77,7 +77,7 @@ public class ReservationController {
 
         reservationService.deleteReservation(reservationId);
 
-        return "detailMembre";
+        return "confirmationAnnulation";
     }
 
 }

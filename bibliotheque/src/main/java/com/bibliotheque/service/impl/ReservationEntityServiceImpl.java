@@ -55,12 +55,22 @@ public class ReservationEntityServiceImpl implements ReservationEntityService {
     }
 
     @Override
-    public ReservationEntity updateReservation(ReservationEntity reservation) {
+    public boolean updateReservation(ReservationEntity reservation) {
         try {
-            return this.repository.save(reservation);
+            List<ReservationEntity> reservationEntityList = getAllReservationsByLivre(reservation.getLivreId());
+            for(ReservationEntity reservationEntity : reservationEntityList){
+                if(reservation.getNumPositionResa() < reservationEntity.getNumPositionResa()){
+                    reservationEntity.setNumPositionResa(reservationEntity.getNumPositionResa()-1);
+                    this.repository.save(reservationEntity);
+                }
+            }
+            reservation.setNumPositionResa(0);
+            //reservation.setStatut("terminé");
+             this.repository.save(reservation);
+             return true;
         } catch (Exception e){
             e.printStackTrace();
-            return null;
+            return false;
         }
     }
 

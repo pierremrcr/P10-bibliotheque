@@ -38,4 +38,11 @@ public class ReservationRepository {
         DeleteReservationResponse response = this.reservationClient.deleteReservation(reservationId);
         return response.getServiceStatus().getStatusCode();
     }
+
+    public String updateReservation(ReservationType reservation) {
+        UpdateReservationResponse response = this.reservationClient.updateReservation(reservation);
+        return response.getServiceStatus().getStatusCode();
+    }
+
+
 }

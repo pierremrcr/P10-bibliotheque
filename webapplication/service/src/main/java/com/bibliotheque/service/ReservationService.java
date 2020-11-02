@@ -39,7 +39,7 @@ public class ReservationService {
         List<ReservationType> reservationTypeList = new ArrayList<>();
 
         for (ReservationType reservationType : listeReservations){
-            if (!reservationType.getStatut().equals("Annuler")){
+            if (reservationType.getStatut().equals("réservé")){
                 reservationTypeList.add(reservationType);
             }
         }
@@ -53,5 +53,9 @@ public class ReservationService {
 
     public String deleteReservation(Integer reservationId) {
         return this.reservationRepository.deleteReservation(reservationId);
+    }
+
+    public String updateReservation(ReservationType reservation) {
+        return this.reservationRepository.updateReservation(reservation);
     }
 }

@@ -21,10 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-
 @Endpoint
 public class ReservationEndpoint {
-
 
 
     public static final String NAMESPACE_URI = "http://www.bibliotheque.com/livres-ws";
@@ -190,8 +188,44 @@ public class ReservationEndpoint {
         return response;
     }
 
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateReservationRequest")
+    @ResponsePayload
+    public UpdateReservationResponse updateReservation(@RequestPayload UpdateReservationRequest request){
+        UpdateReservationResponse response = new UpdateReservationResponse();
+        ServiceStatus serviceStatus = new ServiceStatus();
 
-}
+        ReservationEntity reservationEntityFromDB = reservationEntityService.getReservationById(request.getReservationType().getId());
+
+        if(reservationEntityFromDB == null) {
+            serviceStatus.setStatusCode("CONFLICT");
+            serviceStatus.setMessage("Réservation = " + request.getReservationType().getId() + "not found");
+
+        } else {
+
+            boolean flag = reservationEntityService.updateReservation(reservationEntityFromDB);
+
+            if (flag == false) {
+                serviceStatus.setStatusCode("CONFLICT");
+                serviceStatus.setMessage("Exception while updating Entity=" + request.getReservationType().getId());
+
+            } else {
+                serviceStatus.setStatusCode("SUCCESS");
+                serviceStatus.setMessage("Content updated Successfully");
+            }
+        }
+
+        response.setServiceStatus(serviceStatus);
+        return response;
+
+
+        }
+
+
+
+    }
+
+
+
 
 
 

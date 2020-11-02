@@ -9,7 +9,7 @@ public interface ReservationEntityService {
     ReservationEntity getReservationById(int id);
     List<ReservationEntity> getAllReservations();
     ReservationEntity addReservation(ReservationEntity reservation);
-    ReservationEntity updateReservation(ReservationEntity reservation);
+    boolean updateReservation(ReservationEntity reservation);
     boolean deleteReservation(int id);
     List<ReservationEntity> getAllReservationsByLivre(int livreId);
     List<ReservationEntity> getAllReservationByMembre(int membreId);

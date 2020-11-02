@@ -31,39 +31,16 @@ public class SendingMail {
         properties.setProperty("mail.smtp.auth", "true");
         properties.setProperty("mail.transport.protocol", "smtp");
 
-
         Session session = Session.getInstance(properties);
 
         // 2 -> Création du message
         MimeMultipart content = new MimeMultipart("related");
         MimeBodyPart htmlPart = new MimeBodyPart();
 
-
         try {
 
-            htmlPart.setText(""
-                            + "<html>"
-                            + "<body>"
-                            + "<h1>Demande de restitution d'un livre</h1>"
-                            + "<hr/>"
-                            + "<div id=\"conteneur\" style=\" display:flex; width:100%; margin:auto\">"
-                            +                ""+ text + ""
-                            + "</div>"
-                            + "<hr/>"
-                            + "<div style=\"margin:auto; text-align:center; width:70%\">"
-                            + "<h4><a href=\"http://localhost:8080/\">Bibliothèque de La Rochelle</a></h4>"
-                            + "<small>Adresse : 7 Avenue Michel Crépeau, 17000 La Rochelle</small></br>"
-                            + "<small>La bibliothéque est ouverte du lundi au samedi de 9h00 à 18h00</small></br>"
-                            + "<small>Téléphone : 05 17 67 58 27</small></br>"
-                            + "<small>Email : mediathequedelarochelle@gmail.com</small></br>"
-                            + "</div>"
-                            + "</body>"
-                            + "</html>"
-                    ,"UTF-8", "html");
-
+            htmlPart.setText(text,"UTF-8", "html");
             content.addBodyPart(htmlPart);
-
-
 
         } catch (MessagingException pEX){
             pEX.printStackTrace();
@@ -79,7 +56,6 @@ public class SendingMail {
         } catch (MessagingException pEX){
 
         }
-
 
         // 3 -> Envoi du message
         Transport transport = null;

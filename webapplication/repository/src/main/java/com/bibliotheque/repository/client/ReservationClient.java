@@ -38,4 +38,10 @@ public class ReservationClient extends WebServiceGatewaySupport {
         return (DeleteReservationResponse) getWebServiceTemplate().marshalSendAndReceive(request);
 
     }
+
+    public UpdateReservationResponse updateReservation(ReservationType reservation) {
+        UpdateReservationRequest request = new UpdateReservationRequest();
+        request.setReservationType(reservation);
+        return (UpdateReservationResponse) getWebServiceTemplate().marshalSendAndReceive(request);
+    }
 }
