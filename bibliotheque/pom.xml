@@ -46,13 +46,11 @@
 			<artifactId>wsdl4j</artifactId>
 		</dependency>
 
-
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.10</version>
         </dependency>
-
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -72,6 +70,36 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<!-- ===== Test unitaires ===== -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.6.3</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.19</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>3.4.4</version>
+			<scope>test</scope>
+		</dependency>
+
 
 	</dependencies>
 
