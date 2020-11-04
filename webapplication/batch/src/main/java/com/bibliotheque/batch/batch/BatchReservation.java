@@ -55,29 +55,33 @@ public class BatchReservation implements Tasklet, StepExecutionListener {
         for (ReservationType reservation : listeReservations) {
             //On vérifie si un exemplaire est disponible parmi les ouvrages ayant été réservé
             for (ExemplaireType exemplaire : reservation.getLivreEntity().getListeExemplaires()) {
-                //Si un exemplaire est dispo, on envoie un message à l'utilisateur ayant fait la réservation en premier
-                if (exemplaire.isDisponibilite()) {
 
-                    if (!delaiExpired(reservation)) {
-                        MembreType membre = reservation.getMembreEntity();
-                        LivreType livre = reservation.getLivreEntity();
-                        XMLGregorianCalendar dateDispo = reservation.getDateDispo();
-                        Date dateDispoConverted = dateFormat.parse(dateDispo.toString());
-                        String subject = "Info réservation : Mediathèque de La Rochelle";
-                        String text = messagesMail.textMailLivreDisponible(dateDispoConverted, membre, livre);
-                        sendingMail.sendMessage(subject, text, membre.getAdresseMail());
-                        reservation.setStatut("terminé");
-                        reservationService.updateReservation(reservation);
+                if (!exemplaire.isDisponibilite()) {
+                    break;
+                }
 
-                    } else if (delaiExpired(reservation)) {
-                        MembreType membre = reservation.getMembreEntity();
-                        LivreType livre = reservation.getLivreEntity();
-                        String subject = "Info réservation : Mediathèque de La Rochelle";
-                        String text = messagesMail.textMailDelaiExpirer(membre, livre);
-                        sendingMail.sendMessage(subject, text, membre.getAdresseMail());
-                        reservation.setStatut("expiré");
-                        reservationService.updateReservation(reservation);
-                    }
+                //Si un exemplaire est disponible, on envoie un message à l'utilisateur ayant fait la réservation en premier
+                if (!delaiExpired(reservation)) {
+                    // le délai n'a pas expiré --> On envoit un mail à l'utilisateur pour l'avertir que le livre est disponible
+                    MembreType membre = reservation.getMembreEntity();
+                    LivreType livre = reservation.getLivreEntity();
+                    XMLGregorianCalendar dateDispo = reservation.getDateDispo();
+                    Date dateDispoConverted = dateFormat.parse(dateDispo.toString());
+                    String subject = "Info réservation : Mediathèque de La Rochelle";
+                    String text = messagesMail.textMailLivreDisponible(dateDispoConverted, membre, livre);
+                    sendingMail.sendMessage(subject, text, membre.getAdresseMail());
+                    reservation.setStatut("terminé");
+                    reservationService.updateReservation(reservation);
+
+                } else {
+                    // Le délai a expiré --> On envoit un mail à l'utilisateur pour l'avertir que le livre n'est plus disponible
+                    MembreType membre = reservation.getMembreEntity();
+                    LivreType livre = reservation.getLivreEntity();
+                    String subject = "Info réservation : Mediathèque de La Rochelle";
+                    String text = messagesMail.textMailDelaiExpirer(membre, livre);
+                    sendingMail.sendMessage(subject, text, membre.getAdresseMail());
+                    reservation.setStatut("expiré");
+                    reservationService.updateReservation(reservation);
                 }
             }
         }
@@ -85,35 +89,33 @@ public class BatchReservation implements Tasklet, StepExecutionListener {
         return RepeatStatus.FINISHED;
     }
 
-        private List<ReservationType> getListeReservationsFirstPosition (){
+    private List<ReservationType> getListeReservationsFirstPosition (){
 
-            List<ReservationType> listeReservations = reservationService.getAllReservations();
-            List<ReservationType> listeResaFirstPosition = new ArrayList<>();
+        List<ReservationType> listeReservations = reservationService.getAllReservations();
+        List<ReservationType> listeResaFirstPosition = new ArrayList<>();
 
-            for (ReservationType reservation : listeReservations) {
-                if (reservation.getNumPositionResa() == 1 && reservation.getStatut().equals("réservé")) {
-                    listeResaFirstPosition.add(reservation);
-                }
-            }
-
-            return listeResaFirstPosition;
-
-        }
-
-        private boolean delaiExpired(ReservationType reservationType) throws ParseException {
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date today = Calendar.getInstance().getTime();
-            Date dateDispo = dateFormat.parse(reservationType.getDateDispo().toString());
-            if (dateDispo.before(addDays(today, 2))) {
-                return true;
-            } else {
-                return false;
+        for (ReservationType reservation : listeReservations) {
+            if (reservation.getNumPositionResa() == 1 && reservation.getStatut().equals("réservé")) {
+                listeResaFirstPosition.add(reservation);
             }
         }
 
-        // date dispo : 11-11-2020  < date today : 12-11-2020 --> date expiré
-        // date dispo : 13-11-2020  > date today : 12-11-2020 --> date non expiré
+        return listeResaFirstPosition;
+
+    }
+
+    private boolean delaiExpired(ReservationType reservationType) throws ParseException {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = Calendar.getInstance().getTime();
+        Date dateDispo = dateFormat.parse(reservationType.getDateDispo().toString());
+        if (dateDispo.before(addDays(today, 2))) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
 
     public static Date addDays(Date date, int days) {

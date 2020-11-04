@@ -72,11 +72,11 @@ public class MessagesMail {
         List<String> pathMessage = new ArrayList<>();
 
         try{
-            String filename = "messagesMail.properties";
+            String filename = "mail.properties";
             stream = getClass().getClassLoader().getResourceAsStream(filename);
             properties.load(stream);
             pathMessage.add(properties.getProperty("mailPartie1"));
-            pathMessage.add(properties.getProperty("adresse_bibliothèque"));
+            pathMessage.add(properties.getProperty("adresse_bibliotheque"));
         } catch (Exception pEX){
             pEX.printStackTrace();
         }

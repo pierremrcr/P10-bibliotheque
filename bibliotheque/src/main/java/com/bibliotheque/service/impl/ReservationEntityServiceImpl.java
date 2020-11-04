@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 @Transactional
@@ -65,7 +65,12 @@ public class ReservationEntityServiceImpl implements ReservationEntityService {
                 }
             }
             reservation.setNumPositionResa(0);
-            //reservation.setStatut("terminé");
+            if(delaiExpired(reservation)) {
+                reservation.setStatut("annulé");
+            }
+            else {
+                reservation.setStatut("terminé");
+            }
              this.repository.save(reservation);
              return true;
         } catch (Exception e){
@@ -114,6 +119,25 @@ public class ReservationEntityServiceImpl implements ReservationEntityService {
             }
         }
         return reservationEntityList;
+    }
+
+    private boolean delaiExpired(ReservationEntity reservation) throws ParseException {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = Calendar.getInstance().getTime();
+        Date dateDispo = dateFormat.parse(reservation.getDateDispo().toString());
+        if (dateDispo.before(addDays(today, 2))) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static Date addDays(Date date, int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, days); //minus number would decrement the days
+        return cal.getTime();
     }
 
 

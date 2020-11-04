@@ -2,11 +2,15 @@ package com.bibliotheque.endpoint;
 
 
 
+import com.bibliotheque.entity.ExemplaireEntity;
+import com.bibliotheque.entity.LivreEntity;
+import com.bibliotheque.entity.MembreEntity;
 import com.bibliotheque.entity.ReservationEntity;
 import com.bibliotheque.gs_ws.*;
 import com.bibliotheque.service.contract.ReservationEntityService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -47,19 +51,37 @@ public class ReservationEndpoint {
         List<ReservationEntity> reservationEntityList = reservationEntityService.getAllReservations();
         List<ReservationType> reservationTypeList = new ArrayList<>();
 
-        for (ReservationEntity entity : reservationEntityList) {
+        for (ReservationEntity reservationEntity : reservationEntityList) {
             ReservationType reservationType = new ReservationType();
+            LivreType livreType = new LivreType();
+            MembreType membreType = new MembreType();
+            LivreEntity livreEntity = reservationEntity.getLivreEntity();
+            MembreEntity membreEntity = reservationEntity.getMembreEntity();
+
+            for(ExemplaireEntity exemplaireEntity : livreEntity.getListeExemplaires()){
+                ExemplaireType exemplaireType = new ExemplaireType();
+                BeanUtils.copyProperties(exemplaireEntity, exemplaireType);
+                livreType.getListeExemplaires().add(exemplaireType);
+
+            }
+
+
+            BeanUtils.copyProperties(livreEntity, livreType);
+            BeanUtils.copyProperties(membreEntity, membreType);
+
             GregorianCalendar calendar = new GregorianCalendar();
 
-            calendar.setTime(entity.getDateDispo());
+            calendar.setTime(reservationEntity.getDateDispo());
             XMLGregorianCalendar dateDemandeDeResa = DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
 
-            reservationType.setId(entity.getId());
+            reservationType.setId(reservationEntity.getId());
             reservationType.setDateDispo(dateDemandeDeResa);
-            reservationType.setLivreid(entity.getLivreId());
-            reservationType.setNumPositionResa(entity.getNumPositionResa());
-            reservationType.setStatut(entity.getStatut());
-            reservationType.setMembreid(entity.getMembreid());
+            reservationType.setLivreid(reservationEntity.getLivreId());
+            reservationType.setLivreEntity(livreType);
+            reservationType.setNumPositionResa(reservationEntity.getNumPositionResa());
+            reservationType.setStatut(reservationEntity.getStatut());
+            reservationType.setMembreid(reservationEntity.getMembreid());
+            reservationType.setMembreEntity(membreType);
 
             reservationTypeList.add(reservationType);
         }
