@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -121,12 +122,16 @@ public class ReservationEntityServiceImpl implements ReservationEntityService {
         return reservationEntityList;
     }
 
-    private boolean delaiExpired(ReservationEntity reservation) throws ParseException {
+    private boolean delaiExpired(ReservationEntity reservationEntity) throws ParseException {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date today = Calendar.getInstance().getTime();
-        Date dateDispo = dateFormat.parse(reservation.getDateDispo().toString());
-        if (dateDispo.before(addDays(today, 2))) {
+        int dayOfMonthToday = LocalDate.now().getDayOfMonth();
+        Date dateDispo = dateFormat.parse(reservationEntity.getDateDispo().toString());
+        int dayOfMontDateDispo = reservationEntity.getDateDispo().getDay();
+
+        if (dayOfMonthToday == dayOfMontDateDispo) {
+            return false;
+        } else if ((dayOfMonthToday - dayOfMontDateDispo < 2) || (dayOfMonthToday - dayOfMontDateDispo == 2)) {
             return false;
         } else {
             return true;

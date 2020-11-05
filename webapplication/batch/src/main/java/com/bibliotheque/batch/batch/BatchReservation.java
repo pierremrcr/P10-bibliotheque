@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Component
@@ -70,7 +71,6 @@ public class BatchReservation implements Tasklet, StepExecutionListener {
                     String subject = "Info réservation : Mediathèque de La Rochelle";
                     String text = messagesMail.textMailLivreDisponible(dateDispoConverted, membre, livre);
                     sendingMail.sendMessage(subject, text, membre.getAdresseMail());
-                    reservation.setStatut("terminé");
                     reservationService.updateReservation(reservation);
 
                 } else {
@@ -80,7 +80,6 @@ public class BatchReservation implements Tasklet, StepExecutionListener {
                     String subject = "Info réservation : Mediathèque de La Rochelle";
                     String text = messagesMail.textMailDelaiExpirer(membre, livre);
                     sendingMail.sendMessage(subject, text, membre.getAdresseMail());
-                    reservation.setStatut("expiré");
                     reservationService.updateReservation(reservation);
                 }
             }
@@ -107,14 +106,20 @@ public class BatchReservation implements Tasklet, StepExecutionListener {
     private boolean delaiExpired(ReservationType reservationType) throws ParseException {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date today = Calendar.getInstance().getTime();
+        int dayOfMonthToday = LocalDate.now().getDayOfMonth();
         Date dateDispo = dateFormat.parse(reservationType.getDateDispo().toString());
-        if (dateDispo.before(addDays(today, 2))) {
+        int dayOfMontDateDispo = reservationType.getDateDispo().getDay();
+
+        if (dayOfMonthToday == dayOfMontDateDispo) {
+            return false;
+        } else if ((dayOfMonthToday - dayOfMontDateDispo < 2) || (dayOfMonthToday - dayOfMontDateDispo == 2)) {
             return false;
         } else {
             return true;
         }
     }
+
+
 
 
 
