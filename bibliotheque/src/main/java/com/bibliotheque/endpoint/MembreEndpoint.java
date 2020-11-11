@@ -1,9 +1,6 @@
 package com.bibliotheque.endpoint;
 
-import com.bibliotheque.entity.EmpruntEntity;
-import com.bibliotheque.entity.ExemplaireEntity;
-import com.bibliotheque.entity.LivreEntity;
-import com.bibliotheque.entity.MembreEntity;
+import com.bibliotheque.entity.*;
 import com.bibliotheque.gs_ws.*;
 import com.bibliotheque.service.contract.MembreEntityService;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +16,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+
+
 
 @Endpoint
 public class MembreEndpoint {
@@ -71,6 +70,25 @@ public class MembreEndpoint {
             exemplaireType.setLivre(livreType);
 
         }
+
+        for(ReservationEntity reservationEntity : membreEntity.getListeReservations()){
+            ReservationType reservationType = new ReservationType();
+            LivreType livreType = new LivreType();
+            GregorianCalendar dateResa = new GregorianCalendar();
+            dateResa.setTime(reservationEntity.getDateDispo());
+            XMLGregorianCalendar dateResaConverted = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateResa);
+            reservationType.setDateDispo(dateResaConverted);
+            BeanUtils.copyProperties(reservationEntity, reservationType);
+
+            membreType.getListeReservation().add(reservationType);
+
+            LivreEntity livreEntity = reservationEntity.getLivreEntity();
+            BeanUtils.copyProperties(livreEntity, livreType);
+            reservationType.setLivreEntity(livreType);
+
+
+        }
+
 
         BeanUtils.copyProperties(membreEntity, membreType);
         response.setMembreType(membreType);
@@ -129,6 +147,7 @@ public class MembreEndpoint {
         if (savedMembreEntity == null) {
             serviceStatus.setStatusCode("CONFLICT");
             serviceStatus.setMessage("Exception while adding Entity");
+
         } else {
 
             BeanUtils.copyProperties(savedMembreEntity,newMembreType);
@@ -205,3 +224,5 @@ public class MembreEndpoint {
 
 
 }
+
+

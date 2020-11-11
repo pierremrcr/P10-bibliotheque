@@ -2,9 +2,11 @@ package com.bibliotheque.service.impl;
 
 import com.bibliotheque.entity.EmpruntEntity;
 import com.bibliotheque.entity.ExemplaireEntity;
+import com.bibliotheque.entity.LivreEntity;
 import com.bibliotheque.entity.MembreEntity;
 import com.bibliotheque.repository.EmpruntEntityRepository;
 import com.bibliotheque.repository.ExemplaireEntityRepository;
+import com.bibliotheque.repository.LivreEntityRepository;
 import com.bibliotheque.service.contract.EmpruntEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,9 +25,11 @@ public class EmpruntEntityServiceImpl implements EmpruntEntityService {
     @Autowired
     ExemplaireEntityRepository exemplaireEntityRepository;
 
+    @Autowired
+    LivreEntityRepository livreEntityRepository;
+
     @Override
     public EmpruntEntity getEmpruntById(int id) {
-
         return this.repository.findById(id);
     }
 
@@ -93,6 +97,22 @@ public class EmpruntEntityServiceImpl implements EmpruntEntityService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public List<EmpruntEntity> getAllEmpruntsByLivreId(int livreId) {
+        List<EmpruntEntity> listeEmprunts = new ArrayList<>();
+        List<ExemplaireEntity> listeExemplaires = new ArrayList<>();
+
+        this.livreEntityRepository.findAllExemplairesByLivreId(livreId).forEach(e-> listeExemplaires.add(e));
+
+        for(ExemplaireEntity exemplaire : listeExemplaires){
+            this.repository.findAllEmpruntsByLivreId(exemplaire.getId()).forEach(e-> listeEmprunts.add(e));
+        }
+
+        return listeEmprunts;
+
+
     }
 
 

@@ -23,7 +23,6 @@ public class ConfigSoap {
         client.setDefaultUri("http://localhost:8080/ws/livres");
         client.setMarshaller(marshaller);
         client.setUnmarshaller(marshaller);
-        System.out.println("passage dans configSoap");
         return client;
     }
 
@@ -72,9 +71,14 @@ public class ConfigSoap {
         return client;
     }
 
-
-
-
+    @Bean
+    public ReservationClient reservationClient(Jaxb2Marshaller marshaller) {
+        ReservationClient client = new ReservationClient();
+        client.setDefaultUri("http://localhost:8080/ws/livres");
+        client.setMarshaller(marshaller);
+        client.setUnmarshaller(marshaller);
+        return client;
+    }
 
 
 

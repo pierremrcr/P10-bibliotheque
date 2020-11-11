@@ -1,12 +1,10 @@
 package com.bibliotheque.web.controller;
 
-import com.bibliotheque.service.EmpruntService;
-import com.bibliotheque.service.ExemplaireService;
-import com.bibliotheque.service.LivreService;
-import com.bibliotheque.service.MembreService;
+import com.bibliotheque.service.*;
 import livres.wsdl.EmpruntType;
 import livres.wsdl.LivreType;
 import livres.wsdl.MembreType;
+import livres.wsdl.ReservationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class MembreController {
@@ -40,6 +39,10 @@ public class MembreController {
     @Autowired
     private ExemplaireService exemplaireService;
 
+    @Autowired
+    private ReservationService reservationService;
+
+
 
     @Autowired
     public MembreController(MembreService service, EmpruntService empruntService) {
@@ -53,6 +56,7 @@ public class MembreController {
         membreType = this.service.membreById(id);
         List<LivreType> listeLivres = this.livreService.getAllLivresEmpruntes(id);
         List<EmpruntType> listeEmprunts = membreType.getListeEmprunts();
+        List<ReservationType> listeReservations = membreType.getListeReservation();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         model.addAttribute("dateFormat", dateFormat);
         Date dateToday = dateFormat.parse(dateFormat.format(new Date()));
@@ -61,6 +65,7 @@ public class MembreController {
         model.addAttribute("dateFormat", dateFormat);
         model.addAttribute("listeLivres", listeLivres);
         model.addAttribute("listeEmprunts", listeEmprunts);
+        model.addAttribute("listeReservations", listeReservations);
         return "detailMembre";
 
     }

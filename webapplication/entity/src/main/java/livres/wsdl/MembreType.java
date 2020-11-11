@@ -2,7 +2,7 @@
 // Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.11 
 // Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2020.10.12 à 07:59:15 PM CEST 
+// Généré le : 2020.10.27 à 01:57:58 PM CET 
 //
 
 
@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="code_postal" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="ville" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *         &lt;element name="listeEmprunts" type="{http://www.bibliotheque.com/livres-ws}empruntType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element name="listeReservation" type="{http://www.bibliotheque.com/livres-ws}reservationType" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -55,7 +56,8 @@ import javax.xml.bind.annotation.XmlType;
     "adresse",
     "codePostal",
     "ville",
-    "listeEmprunts"
+    "listeEmprunts",
+    "listeReservation"
 })
 public class MembreType {
 
@@ -77,6 +79,7 @@ public class MembreType {
     @XmlElement(required = true)
     protected String ville;
     protected List<EmpruntType> listeEmprunts;
+    protected List<ReservationType> listeReservation;
 
     /**
      * Obtient la valeur de la propriété id.
@@ -313,6 +316,35 @@ public class MembreType {
             listeEmprunts = new ArrayList<EmpruntType>();
         }
         return this.listeEmprunts;
+    }
+
+    /**
+     * Gets the value of the listeReservation property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the listeReservation property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getListeReservation().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link ReservationType }
+     * 
+     * 
+     */
+    public List<ReservationType> getListeReservation() {
+        if (listeReservation == null) {
+            listeReservation = new ArrayList<ReservationType>();
+        }
+        return this.listeReservation;
     }
 
 }

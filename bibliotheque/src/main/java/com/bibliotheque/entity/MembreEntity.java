@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="membre")
@@ -45,7 +46,10 @@ public class MembreEntity implements Serializable {
     private String ville;
 
     @OneToMany(mappedBy = "membreEntity", fetch = FetchType.EAGER)
-    private List<EmpruntEntity> listeEmprunts;
+    private Set<EmpruntEntity> listeEmprunts;
+
+    @OneToMany(mappedBy = "membreEntity", fetch = FetchType.EAGER)
+    private Set<ReservationEntity> listeReservations;
 
     public MembreEntity() {
     }
@@ -122,11 +126,19 @@ public class MembreEntity implements Serializable {
         this.ville = ville;
     }
 
-    public List<EmpruntEntity> getListeEmprunts() {
+    public Set<EmpruntEntity> getListeEmprunts() {
         return listeEmprunts;
     }
 
-    public void setListeEmprunts(List<EmpruntEntity> listeEmprunts) {
+    public void setListeEmprunts(Set<EmpruntEntity> listeEmprunts) {
         this.listeEmprunts = listeEmprunts;
+    }
+
+    public Set<ReservationEntity> getListeReservations() {
+        return listeReservations;
+    }
+
+    public void setListeReservations(Set<ReservationEntity> listeReservations) {
+        this.listeReservations = listeReservations;
     }
 }

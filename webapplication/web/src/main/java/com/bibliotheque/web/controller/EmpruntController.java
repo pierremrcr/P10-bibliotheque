@@ -60,7 +60,7 @@ public class EmpruntController {
         empruntType.setMembreEntity(membreType);
         empruntService.addEmprunt(empruntType);
 
-        return "confirmationReservation";
+        return "confirmationEmprunt";
 
     }
 

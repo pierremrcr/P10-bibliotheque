@@ -48,7 +48,6 @@ public class MailItemProcessor implements Tasklet, StepExecutionListener {
     @Override
     public void beforeStep(StepExecution stepExecution) {
 
-
     }
 
     @Override

@@ -14,4 +14,5 @@ public interface EmpruntEntityService {
     public boolean deleteEmpruntById(int id);
     public List<EmpruntEntity> getAllEmpruntsWhereDateFinIsBeforeDateToday();
     boolean updateEmpruntTermine(EmpruntEntity emprunt);
+    List<EmpruntEntity> getAllEmpruntsByLivreId(int livreId);
 }

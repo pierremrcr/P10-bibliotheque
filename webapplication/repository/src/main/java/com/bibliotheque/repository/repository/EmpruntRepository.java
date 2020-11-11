@@ -50,6 +50,11 @@ public class EmpruntRepository {
         return response.getEmpruntType();
     }
 
+    public List<EmpruntType> getAllEmpruntsByLivreId(int livreId){
+        GetAllEmpruntsByLivreIdResponse response = this.client.getAllEmpruntsByLivreId(livreId);
+        return response.getListeEmpruntsByLivreId();
+    }
+
 
 
 }

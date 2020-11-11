@@ -140,6 +140,7 @@
                                             <p><a class="btn btn-outline-primary" href="#" th:href="@{/prolongation(empruntId=${emprunt.getId()})}">PROLONGER</a></p>
                                         </td>
                                     </th:block>
+                                    </th:block>
 
                                     <th:block th:if="${!emprunt.isProlongation()}">
                                         <th:block th:if="${dateFormat.parse(emprunt.getDateFin().toString()).before(dateToday)}">
@@ -165,8 +166,8 @@
 
                             </tr>
 
-                            </tbody>
 
+                            </tbody>
 
 
                         </th:block>
@@ -175,17 +176,63 @@
 
                 </div>
 
-            </div>
+
+                <h3>Mes réservations</h3>
 
 
-            <script type="text/javascript"
-                    src="http://localhost:8080/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
+                <div class="table-responsive">
+
+
+                    <table class="table table-hover table-border">
+
+                        <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Auteur</th>
+                            <th>Date de retour</th>
+                            <th>Statut</th>
+                            <th>Rang liste d'attente</th>
+                            <th>Annuler la réservation</th>
+                        </tr>
+                        </thead>
+
+
+
+                        <th:block th:each="reservation:${listeReservations}">
+
+                            <tbody>
+
+                            <tr>
+
+                                <td th:text="${reservation.getLivreEntity().getTitre()}"></td>
+                                <td th:text="${reservation.getLivreEntity().getAuteur()}"></td>
+                                <td th:text="${dateFormat.format(dateFormat.parse(reservation.getDateDispo().toString()))}"></td>
+                                <td th:text="${reservation.getStatut()}"></td>
+                                <td th:text="${reservation.getNumPositionResa()}"></td>
+                                <td>
+                                    <p><a class="btn btn-outline-primary" href="#" th:href="@{/annulerReservation(reservationId=${reservation.getId()})}">Confirmer</a></p>
+                                </td>
+
+                            </tr>
+
+                            </tbody>
+
+                        </th:block>
+
+                    </table>
+
+                </div>
 
         </div>
 
     </div>
 
 </div>
+
+</div>
+
+<script type="text/javascript"
+        src="http://localhost:8080/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
 
 </body>
 
