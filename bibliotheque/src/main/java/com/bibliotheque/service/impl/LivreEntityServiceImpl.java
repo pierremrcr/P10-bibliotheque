@@ -23,7 +23,7 @@ public class LivreEntityServiceImpl implements LivreEntityService {
 
     @Override
     public LivreEntity getLivreById(int id) {
-           return this.repository.findById(id);
+        return this.repository.findById(id);
     }
 
     @Override
