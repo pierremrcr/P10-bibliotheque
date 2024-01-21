@@ -1,0 +1,4 @@
+2023-10-26 17:31:57 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Erreur de syntaxe dans l'instruction SQL "SELECT * FROM EMPRUNT EXEMPLAIRE LIVRE[*]"
+Syntax error in SQL statement "SELECT * FROM EMPRUNT EXEMPLAIRE LIVRE[*]"; SQL statement:
+SELECT * FROM EMPRUNT EXEMPLAIRE LIVRE [42000-199]
