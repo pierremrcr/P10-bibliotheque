@@ -26,7 +26,7 @@ public class SendingMail {
         InputStream stream = null;
 
         final String username = "bibliotheque.oc17@gmail.com";
-        final String password = "batchbibliotheque";
+        final String password = "dfgk bybm bgqk ltjo";
 
         Properties properties = new Properties();
         properties.setProperty("mail.smtp.host", "true");

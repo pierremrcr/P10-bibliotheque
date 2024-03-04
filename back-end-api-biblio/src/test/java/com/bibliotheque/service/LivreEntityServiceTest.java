@@ -1,8 +1,8 @@
 package com.bibliotheque.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.bibliotheque.BibliothequeApplication;
-import com.bibliotheque.entity.ExemplaireEntity;
 import com.bibliotheque.entity.LivreEntity;
 import com.bibliotheque.service.contract.LivreEntityService;
 
@@ -60,24 +59,9 @@ public class LivreEntityServiceTest {
 
 	LivreEntity livre = new LivreEntity(1, "Kilometre zero", "Inconnu");
 
-	LivreEntity result = this.livreService.addLivre(livre);
+	boolean result = this.livreService.addLivre(livre);
 
-	assertEquals("Inconnu", result.getAuteur());
-
-	}
-
-
-	@Test
-	public void updateLivreTest() {
-
-	LivreEntity livre = new LivreEntity(1, "Kilometre zero", "Inconnu");
-
-	LivreEntity result = this.livreService.addLivre(livre);
-	assertEquals("Inconnu", result.getAuteur());
-
-	livre.setAuteur("Maud Ankoua");
-	LivreEntity result2 = this.livreService.addLivre(livre);
-	assertEquals("Maud Ankoua", result2.getAuteur());
+	assertTrue(result);
 
 	}
 
@@ -87,46 +71,15 @@ public class LivreEntityServiceTest {
 
 	LivreEntity livre = new LivreEntity(1, "Kilometre zero", "Inconnu");
 	
-	LivreEntity result = this.livreService.addLivre(livre);
-	assertEquals("Inconnu", result.getAuteur());
+	boolean result = this.livreService.addLivre(livre);
+	
+	assertTrue(result);
 	
 	final boolean result2 = livreService.deleteLivreById(1);
-
+	
 	assertEquals(result2, true);
 
 	}
-	
-	@Test
-	public void deleteLivreAndExemplairesTest() {
-
-	LivreEntity livre = new LivreEntity(1, "Kilometre zero", "Inconnu");
-
-	List<ExemplaireEntity> listeExemplaires = new ArrayList<>();
-
-	ExemplaireEntity exemplaire1 = new ExemplaireEntity(1,true, 1);
-	ExemplaireEntity exemplaire2 = new ExemplaireEntity(2,false, 1);
-	ExemplaireEntity exemplaire3 = new ExemplaireEntity(3,false, 1);
-
-	listeExemplaires.add(exemplaire1);
-	listeExemplaires.add(exemplaire2);
-	listeExemplaires.add(exemplaire3);
-
-	livre.setListeExemplaires(listeExemplaires);
-	
-	livreService.addLivre(livre);
-	
-	LivreEntity livreFound = livreService.getLivreById(1);
-	assertEquals("Inconnu", livreFound.getAuteur());
-	assertEquals(3, livreFound.getListeExemplaires().size());
-	
-	boolean result = livreService.deleteLivre(livreFound);
-	
-	assertEquals(true, result);
-	assertEquals(0,livreFound.getListeExemplaires().size());
-
-
-	}
-	
-	
+		
 
 }

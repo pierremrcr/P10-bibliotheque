@@ -41,12 +41,13 @@ public class LivreEntityServiceImpl implements LivreEntityService {
     }
 
     @Override
-    public LivreEntity addLivre(LivreEntity livreEntity) {
+    public boolean addLivre(LivreEntity livreEntity) {
         try{
-            return this.repository.save(livreEntity);
+            this.repository.save(livreEntity);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
     }
 

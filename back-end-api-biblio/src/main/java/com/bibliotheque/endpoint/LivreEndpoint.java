@@ -167,15 +167,13 @@ public class LivreEndpoint {
         newLivreEntity.setDatePublication(datePublication);
 
         BeanUtils.copyProperties(request.getLivreType(),newLivreEntity);
-        LivreEntity savedLivreEntity = this.service.addLivre(newLivreEntity);
+        boolean flag = this.service.addLivre(newLivreEntity);
 
-        if (savedLivreEntity == null) {
+        if (flag == false) {
             serviceStatus.setStatusCode("CONFLICT");
             serviceStatus.setMessage("Exception while adding Entity");
-
         } else {
-
-            BeanUtils.copyProperties(savedLivreEntity,newLivreType);
+            //BeanUtils.copyProperties(savedLivreEntity,newLivreType);
             serviceStatus.setStatusCode("SUCCESS");
             serviceStatus.setMessage("Content Added Successfully");
         }

@@ -1,9 +1,8 @@
 package com.bibliotheque.endpoint;
 
-import com.bibliotheque.entity.EmpruntEntity;
-import com.bibliotheque.entity.ExemplaireEntity;
-import com.bibliotheque.gs_ws.*;
-import com.bibliotheque.service.contract.ExemplaireEntityService;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -11,8 +10,23 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.bibliotheque.entity.EmpruntEntity;
+import com.bibliotheque.entity.ExemplaireEntity;
+import com.bibliotheque.gs_ws.AddExemplaireRequest;
+import com.bibliotheque.gs_ws.AddExemplaireResponse;
+import com.bibliotheque.gs_ws.DeleteExemplaireRequest;
+import com.bibliotheque.gs_ws.DeleteExemplaireResponse;
+import com.bibliotheque.gs_ws.EmpruntType;
+import com.bibliotheque.gs_ws.ExemplaireType;
+import com.bibliotheque.gs_ws.GetAllExemplairesAndEmpruntsRequest;
+import com.bibliotheque.gs_ws.GetAllExemplairesAndEmpruntsResponse;
+import com.bibliotheque.gs_ws.GetAllExemplairesRequest;
+import com.bibliotheque.gs_ws.GetExemplaireByIdRequest;
+import com.bibliotheque.gs_ws.GetExemplaireByIdResponse;
+import com.bibliotheque.gs_ws.ServiceStatus;
+import com.bibliotheque.gs_ws.UpdateExemplaireRequest;
+import com.bibliotheque.gs_ws.UpdateExemplaireResponse;
+import com.bibliotheque.service.contract.ExemplaireEntityService;
 
 @Endpoint
 public class ExemplaireEndpoint {
@@ -49,8 +63,8 @@ public class ExemplaireEndpoint {
         return response;
 
     }
-
-
+    
+    
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllExemplairesAndEmpruntsRequest")
     @ResponsePayload
@@ -95,17 +109,15 @@ public class ExemplaireEndpoint {
         ExemplaireEntity newExemplaireEntity = new ExemplaireEntity();
 
         BeanUtils.copyProperties(request.getExemplaireType(), newExemplaireEntity);
-        ExemplaireEntity savedExemplaireEntity = exemplaireEntityService.addExemplaire(newExemplaireEntity);
+        boolean flag = exemplaireEntityService.addExemplaire(newExemplaireEntity);
 
-        if (savedExemplaireEntity == null) {
+        if(flag == false) {
             serviceStatus.setStatusCode("CONFLICT");
-            serviceStatus.setMessage("Exception while adding Entity");
+            serviceStatus.setMessage("Exception while updating Entity=" + request.getExemplaireType().getId());
 
-        } else {
-
-            BeanUtils.copyProperties(savedExemplaireEntity,newExemplaireType);
+        }else {
             serviceStatus.setStatusCode("SUCCESS");
-            serviceStatus.setMessage("Content Added Successfully");
+            serviceStatus.setMessage("Content updated Successfully");
         }
 
         response.setExemplaireType(newExemplaireType);

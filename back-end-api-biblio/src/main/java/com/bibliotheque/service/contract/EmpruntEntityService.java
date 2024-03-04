@@ -9,9 +9,10 @@ public interface EmpruntEntityService {
 
     public EmpruntEntity getEmpruntById(int id);
     public List<EmpruntEntity> getAllEmprunts();
-    public EmpruntEntity addEmprunt(EmpruntEntity emprunt);
+    public boolean addEmprunt(EmpruntEntity emprunt);
     public boolean updateEmprunt(EmpruntEntity emprunt);
     public boolean deleteEmpruntById(int id);
     public List<EmpruntEntity> getAllEmpruntsWhereDateFinIsBeforeDateToday();
     boolean updateEmpruntTermine(EmpruntEntity emprunt);
+    List<EmpruntEntity> getAllEmpruntsByLivreId(int livreId);
 }

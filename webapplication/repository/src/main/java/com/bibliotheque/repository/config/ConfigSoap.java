@@ -38,7 +38,7 @@ public class ConfigSoap {
 
     @Bean
     public EmpruntClient empruntClient(Jaxb2Marshaller marshaller) {
-        EmpruntClient client = new  EmpruntClient();
+        EmpruntClient client = new EmpruntClient();
         client.setDefaultUri("http://localhost:8080/ws/livres");
         client.setMarshaller(marshaller);
         client.setUnmarshaller(marshaller);
@@ -80,10 +80,6 @@ public class ConfigSoap {
         client.setUnmarshaller(marshaller);
         return client;
     }
-
-
-
-
 
 
 

@@ -41,14 +41,15 @@ public class MembreEntityServiceImpl implements MembreEntityService {
         return listeMembres;
     }
 
+    
     @Override
-    public MembreEntity addMembre(MembreEntity membreEntity) {
+    public boolean addMembre(MembreEntity membreEntity) {
         try {
-            return this.repository.save(membreEntity);
+            this.repository.save(membreEntity);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
-
+            return false;
         }
     }
 

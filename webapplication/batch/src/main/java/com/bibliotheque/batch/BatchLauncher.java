@@ -20,6 +20,9 @@ public class BatchLauncher {
 
     @Autowired
     Job job;
+    
+    @Autowired
+    Job batchReservationJob;
 
     public static void main(String[] args) throws Exception{
 
@@ -30,11 +33,22 @@ public class BatchLauncher {
 
     // Le batch est paramétré pour s'exécuter toutes les 24h00
     @Scheduled(cron = "0 0 */24 * * ?")
-    public void perform() throws Exception {
+	/*
+	 * public void perform() throws Exception {
+	 * 
+	 * JobParameters params = new JobParametersBuilder() .addString("",
+	 * String.valueOf(System.currentTimeMillis())) .toJobParameters();
+	 * jobLauncher.run(job, params); }
+	 */
+    
+    
+    // Le batch est paramétré pour s'exécuter toutes les heures
+    @Scheduled(cron = "0 0 * * * *")
+    public void perform2() throws Exception {
 
         JobParameters params = new JobParametersBuilder()
                 .addString("", String.valueOf(System.currentTimeMillis()))
                 .toJobParameters();
-        jobLauncher.run(job, params);
+        jobLauncher.run(batchReservationJob, params);
     }
 }

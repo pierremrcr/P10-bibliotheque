@@ -31,20 +31,21 @@ public class BatchConfig {
     @Autowired
     private BatchReservation batchReservation;
 
+//    @Bean
+//    public MailItemProcessor processor(){
+//        return new MailItemProcessor();
+//    }
+
+
+//    @Bean
+//    protected Step processorMail() {
+//        return stepBuilderFactory
+//                .get("mailItemProcessor")
+//                .tasklet(mailItemProcessor)
+//                .build();
+//    }
+
     @Bean
-    public MailItemProcessor processor(){
-        return new MailItemProcessor();
-    }
-
-
-    @Bean
-    protected Step processorMail() {
-        return stepBuilderFactory
-                .get("mailItemProcessor")
-                .tasklet(mailItemProcessor)
-                .build();
-    }
-
     protected Step processorBatchReservation(){
         return stepBuilderFactory
                 .get("batchReservation")
@@ -52,14 +53,14 @@ public class BatchConfig {
                 .build();
     }
 
-    @Bean
-    public Job mailJob() {
-        return jobBuilderFactory
-                .get("mailJob")
-                .incrementer(new RunIdIncrementer())
-                .start(processorMail())
-                .build();
-    }
+//    @Bean
+//    public Job mailJob() {
+//        return jobBuilderFactory
+//                .get("mailJob")
+//                .incrementer(new RunIdIncrementer())
+//                .start(processorMail())
+//                .build();
+//    }
 
     @Bean
     public Job batchReservationJob(){

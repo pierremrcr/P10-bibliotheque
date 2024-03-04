@@ -31,12 +31,13 @@ public class ExemplaireEntityServiceImpl implements ExemplaireEntityService {
     }
 
     @Override
-    public ExemplaireEntity addExemplaire(ExemplaireEntity exemplaireEntity) {
+    public boolean addExemplaire(ExemplaireEntity exemplaireEntity) {
         try {
-            return this.repository.save(exemplaireEntity);
+            this.repository.save(exemplaireEntity);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
     }
 

@@ -1,11 +1,13 @@
 package com.bibliotheque.endpoint;
 
-import com.bibliotheque.entity.EmpruntEntity;
-import com.bibliotheque.entity.ExemplaireEntity;
-import com.bibliotheque.entity.LivreEntity;
-import com.bibliotheque.entity.MembreEntity;
-import com.bibliotheque.gs_ws.*;
-import com.bibliotheque.service.contract.MembreEntityService;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -13,12 +15,28 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
+import com.bibliotheque.entity.EmpruntEntity;
+import com.bibliotheque.entity.ExemplaireEntity;
+import com.bibliotheque.entity.LivreEntity;
+import com.bibliotheque.entity.MembreEntity;
+import com.bibliotheque.entity.ReservationEntity;
+import com.bibliotheque.gs_ws.AddMembreRequest;
+import com.bibliotheque.gs_ws.AddMembreResponse;
+import com.bibliotheque.gs_ws.DeleteMembreRequest;
+import com.bibliotheque.gs_ws.DeleteMembreResponse;
+import com.bibliotheque.gs_ws.EmpruntType;
+import com.bibliotheque.gs_ws.ExemplaireType;
+import com.bibliotheque.gs_ws.GetAllMembresRequest;
+import com.bibliotheque.gs_ws.GetAllMembresResponse;
+import com.bibliotheque.gs_ws.GetMembreByIdRequest;
+import com.bibliotheque.gs_ws.GetMembreByIdResponse;
+import com.bibliotheque.gs_ws.LivreType;
+import com.bibliotheque.gs_ws.MembreType;
+import com.bibliotheque.gs_ws.ReservationType;
+import com.bibliotheque.gs_ws.ServiceStatus;
+import com.bibliotheque.gs_ws.UpdateMembreRequest;
+import com.bibliotheque.gs_ws.UpdateMembreResponse;
+import com.bibliotheque.service.contract.MembreEntityService;
 
 @Endpoint
 public class MembreEndpoint {
@@ -69,6 +87,24 @@ public class MembreEndpoint {
 
             empruntType.setExemplaireEntity(exemplaireType);
             exemplaireType.setLivre(livreType);
+
+        }
+        
+        for(ReservationEntity reservationEntity : membreEntity.getListeReservations()){
+            ReservationType reservationType = new ReservationType();
+            LivreType livreType = new LivreType();
+            GregorianCalendar dateResa = new GregorianCalendar();
+            dateResa.setTime(reservationEntity.getDateDispo());
+            XMLGregorianCalendar dateResaConverted = DatatypeFactory.newInstance().newXMLGregorianCalendar(dateResa);
+            reservationType.setDateDispo(dateResaConverted);
+            BeanUtils.copyProperties(reservationEntity, reservationType);
+
+            membreType.getListeReservation().add(reservationType);
+
+            LivreEntity livreEntity = reservationEntity.getLivreEntity();
+            BeanUtils.copyProperties(livreEntity, livreType);
+            reservationType.setLivreEntity(livreType);
+
 
         }
 
@@ -124,16 +160,15 @@ public class MembreEndpoint {
         MembreEntity newMembreEntity = new MembreEntity();
 
         BeanUtils.copyProperties(request.getMembreType(),newMembreEntity);
-        MembreEntity savedMembreEntity = membreEntityService.addMembre(newMembreEntity);
+        
+        boolean flag = membreEntityService.addMembre(newMembreEntity);
 
-        if (savedMembreEntity == null) {
+        if(flag == false) {
             serviceStatus.setStatusCode("CONFLICT");
-            serviceStatus.setMessage("Exception while adding Entity");
+            serviceStatus.setMessage("Exception while updating Entity=" + request.getMembreType().getNom());
         } else {
-
-            BeanUtils.copyProperties(savedMembreEntity,newMembreType);
             serviceStatus.setStatusCode("SUCCESS");
-            serviceStatus.setMessage("Content Added Successfully");
+            serviceStatus.setMessage("Content updated Successfully");
         }
 
         response.setMembreType(newMembreType);

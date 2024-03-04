@@ -1,17 +1,19 @@
 package com.bibliotheque.service.impl;
 
-import com.bibliotheque.entity.EmpruntEntity;
-import com.bibliotheque.entity.ExemplaireEntity;
-import com.bibliotheque.entity.MembreEntity;
-import com.bibliotheque.repository.EmpruntEntityRepository;
-import com.bibliotheque.repository.ExemplaireEntityRepository;
-import com.bibliotheque.service.contract.EmpruntEntityService;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+import com.bibliotheque.entity.EmpruntEntity;
+import com.bibliotheque.entity.ExemplaireEntity;
+import com.bibliotheque.repository.EmpruntEntityRepository;
+import com.bibliotheque.repository.ExemplaireEntityRepository;
+import com.bibliotheque.repository.LivreEntityRepository;
+import com.bibliotheque.service.contract.EmpruntEntityService;
 
 @Service
 @Transactional
@@ -22,6 +24,9 @@ public class EmpruntEntityServiceImpl implements EmpruntEntityService {
 
     @Autowired
     ExemplaireEntityRepository exemplaireEntityRepository;
+    
+    @Autowired
+    LivreEntityRepository livreEntityRepository;
 
     @Override
     public EmpruntEntity getEmpruntById(int id) {
@@ -37,17 +42,14 @@ public class EmpruntEntityServiceImpl implements EmpruntEntityService {
     }
 
     @Override
-    public EmpruntEntity addEmprunt(EmpruntEntity emprunt) {
+    public boolean addEmprunt(EmpruntEntity emprunt) {
 
-        int exemplaireId = emprunt.getExemplaireid();
-        ExemplaireEntity exemplaireEntity = this.exemplaireEntityRepository.findById(exemplaireId);
-        exemplaireEntity.setDisponibilite(false);
-        emprunt.setExemplaireEntity(exemplaireEntity);
         try {
-            return this.repository.save(emprunt);
+             this.repository.save(emprunt);
+             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
     }
 
@@ -93,6 +95,22 @@ public class EmpruntEntityServiceImpl implements EmpruntEntityService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public List<EmpruntEntity> getAllEmpruntsByLivreId(int livreId) {
+        List<EmpruntEntity> listeEmprunts = new ArrayList<>();
+        List<ExemplaireEntity> listeExemplaires = new ArrayList<>();
+
+        this.livreEntityRepository.findAllExemplairesByLivreId(livreId).forEach(e-> listeExemplaires.add(e));
+
+        for(ExemplaireEntity exemplaire : listeExemplaires){
+            this.repository.findAllEmpruntsByLivreId(exemplaire.getId()).forEach(e-> listeEmprunts.add(e));
+        }
+
+        return listeEmprunts;
+
+
     }
 
 

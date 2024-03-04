@@ -4,35 +4,44 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import org.junit.jupiter.api.BeforeEach;
+import javax.servlet.http.HttpSession;
+
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-@ExtendWith(MockitoExtension.class)
+import com.bibliotheque.service.LivreService;
+
+@WebMvcTest(LivreController.class)
 public class LivreControllerTest {
-	
 
-//    private MockMvc mockMvc;
-//
-//    @BeforeEach
-//    void setUp() {
-//        LivreController livreController = new LivreController();
-//        mockMvc = MockMvcBuilders.standaloneSetup(livreController).build();
-//    }
-//
-//    @Test
-//    public void testLivresPage() throws Exception {
-//    	mockMvc.perform(get("/livres"))
-//    			.andExpect(status().isOk())
-//    			.andExpect(view().name("livres"));
-//    			
-//    }
+    @Autowired
+    private MockMvc mockMvc;
+    
+    @Autowired
+    private LivreService livreService;
+    
+    @Autowired
+	HttpSession session;
+
+    @Test
+    public void testGetAllLivres() throws Exception {
+           
+        mockMvc.perform(get("/livres"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("livres"));        
+    }
+    
+    @Test
+    public void testGetLivre() throws Exception {
+    	    	  
+    	 mockMvc.perform((get("/livre"))
+                 .param("id", "1")
+         )
+    	 .andExpect(status().isOk()) // Check if the HTTP status is OK
+         .andExpect(view().name("livre")); // Check if the view name is as expected
+     }       
+    
+       
 }
-	
-	
-	
-
-

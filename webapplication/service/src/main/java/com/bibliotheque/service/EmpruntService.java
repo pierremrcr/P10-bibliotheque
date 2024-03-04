@@ -26,10 +26,7 @@ public class EmpruntService {
     @Autowired
     private ExemplaireRepository exemplaireRepository;
 
-    @Autowired
-    private EmpruntRepository empruntRepository;
-
-    public EmpruntType getEmpruntById(int id) {
+	public EmpruntType getEmpruntById(int id) {
 
         return this.repository.getEmpruntById(id);
     }
@@ -74,21 +71,21 @@ public class EmpruntService {
 
     public String updateEmprunt(EmpruntType empruntType) {
 
-        return this.empruntRepository.updateEmprunt(empruntType);
+        return this.repository.updateEmprunt(empruntType);
 
     }
 
     public String updateRelanceEmprunt(EmpruntType empruntType) {
-        return this.empruntRepository.updateRelanceEmprunt(empruntType);
+        return this.repository.updateRelanceEmprunt(empruntType);
     }
 
     public String updateEmpruntTermine(EmpruntType empruntType) {
-        return this.empruntRepository.updateEmpruntTermine(empruntType);
+        return this.repository.updateEmpruntTermine(empruntType);
     }
 
     public String addEmprunt(EmpruntType empruntType) {
 
-        return this.empruntRepository.addEmprunt(empruntType);
+        return this.repository.addEmprunt(empruntType);
     }
 
     public List<EmpruntType> getAllEmpruntsByLivreId(int livreId){

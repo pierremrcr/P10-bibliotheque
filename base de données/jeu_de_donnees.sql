@@ -35,9 +35,3 @@ INSERT INTO public.emprunt (id, date_debut, date_fin, prolongation, membreid, ex
 
 
 
-
-
-
-
-
-

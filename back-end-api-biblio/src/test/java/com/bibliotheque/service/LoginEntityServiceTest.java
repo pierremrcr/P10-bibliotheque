@@ -3,10 +3,10 @@ package com.bibliotheque.service;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.bibliotheque.BibliothequeApplication;
 import com.bibliotheque.entity.MembreEntity;
@@ -14,7 +14,7 @@ import com.bibliotheque.service.contract.LoginService;
 import com.bibliotheque.service.contract.MembreEntityService;
 
 @SpringBootTest(classes = BibliothequeApplication.class)
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class LoginEntityServiceTest {
 	
 
@@ -38,6 +38,7 @@ public class LoginEntityServiceTest {
 
         assertEquals("test@example.com",resultat.getAdresseMail());
     }
+	
    }
 
 

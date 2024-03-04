@@ -17,133 +17,137 @@ import java.util.*;
 @Transactional
 public class ReservationEntityServiceImpl implements ReservationEntityService {
 
-    @Autowired
-    ReservationEntityRepository repository;
+	@Autowired
+	ReservationEntityRepository repository;
 
-    @Autowired
-    LivreEntityRepository livreEntityRepository;
+	@Autowired
+	LivreEntityRepository livreEntityRepository;
 
-    @Override
-    public ReservationEntity getReservationById(int id) {
-        return this.repository.findById(id);
-    }
+	@Override
+	public ReservationEntity getReservationById(int id) {
+		return this.repository.findById(id);
+	}
 
-    @Override
-    public List<ReservationEntity> getAllReservations() {
-        List<ReservationEntity> reservationEntityList = new ArrayList<>();
-        this.repository.findAll().forEach(reservationEntity -> reservationEntityList.add(reservationEntity));
-        return reservationEntityList;
-    }
+	@Override
+	public List<ReservationEntity> getAllReservations() {
+		List<ReservationEntity> reservationEntityList = new ArrayList<>();
+		this.repository.findAll().forEach(reservationEntity -> reservationEntityList.add(reservationEntity));
+		return reservationEntityList;
+	}
 
-    @Override
-    public ReservationEntity addReservation(ReservationEntity reservation) {
-        List<ReservationEntity> reservationEntityList = getAllReservationsByLivre(reservation.getLivreId());
-        List<Integer> positionResaList = new ArrayList<>();
+	@Override
+	public boolean addReservation(ReservationEntity reservation) {
+		List<ReservationEntity> reservationEntityList = getAllReservationsByLivre(reservation.getLivreId());
+		List<Integer> positionResaList = new ArrayList<>();
 
-        for (ReservationEntity reservationEntity : reservationEntityList){
-            positionResaList.add(reservationEntity.getNumPositionResa());
-            Collections.sort(positionResaList);
-        }
+		for (ReservationEntity reservationEntity : reservationEntityList){
+			positionResaList.add(reservationEntity.getNumPositionResa());
+			Collections.sort(positionResaList);
+		}
+		if(positionResaList.size() > 0){
+			reservation.setNumPositionResa(positionResaList.get(positionResaList.size()-1)+1);
 
-        if(positionResaList.size() > 0){
-            reservation.setNumPositionResa(positionResaList.get(positionResaList.size()-1)+1);
+		} else {
+			reservation.setNumPositionResa(1);
+		}
+		try {
+			this.repository.save(reservation);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
-        } else {
-            reservation.setNumPositionResa(1);
-        }
+	@Override
+	public boolean updateReservation(ReservationEntity reservation) {
+		try {
+			List<ReservationEntity> reservationEntityList = getAllReservationsByLivre(reservation.getLivreId());
+			for(ReservationEntity reservationEntity : reservationEntityList){
+				if(reservation.getNumPositionResa() < reservationEntity.getNumPositionResa()){
+					reservationEntity.setNumPositionResa(reservationEntity.getNumPositionResa()-1);
+					this.repository.save(reservationEntity);
+				}
+			}
+			reservation.setNumPositionResa(0);
+			if(delaiExpired(reservation)) {
+				reservation.setStatut("annulé");
+			}
+			else {
+				reservation.setStatut("terminé");
+			}
+			this.repository.save(reservation);
+			return true;
+		} catch (Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
 
-        return this.repository.save(reservation);
-    }
+	@Override
+	public boolean deleteReservation(int id) {
+		try {
+			ReservationEntity reservationEntity = this.repository.findById(id);
+			List<ReservationEntity> listeReservations = getAllReservationsByLivre(reservationEntity.getLivreId());
 
-    @Override
-    public boolean updateReservation(ReservationEntity reservation) {
-        try {
-            List<ReservationEntity> reservationEntityList = getAllReservationsByLivre(reservation.getLivreId());
-            for(ReservationEntity reservationEntity : reservationEntityList){
-                if(reservation.getNumPositionResa() < reservationEntity.getNumPositionResa()){
-                    reservationEntity.setNumPositionResa(reservationEntity.getNumPositionResa()-1);
-                    this.repository.save(reservationEntity);
-                }
-            }
-            reservation.setNumPositionResa(0);
-            if(delaiExpired(reservation)) {
-                reservation.setStatut("annulé");
-            }
-            else {
-                reservation.setStatut("terminé");
-            }
-             this.repository.save(reservation);
-             return true;
-        } catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-    }
+			for (ReservationEntity reservation : listeReservations) {
+				if (reservationEntity.getNumPositionResa() < reservation.getNumPositionResa() && reservationEntity.getNumPositionResa() != 0) {
+					reservation.setNumPositionResa(reservation.getNumPositionResa() - 1);
+					updateReservation(reservation);
+				}
+			}
+			this.repository.deleteById(id);
+			return true;
+		} catch (Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
 
-    @Override
-    public boolean deleteReservation(int id) {
-        try {
-            ReservationEntity reservationEntity = this.repository.findById(id);
-            List<ReservationEntity> listeReservations = getAllReservationsByLivre(reservationEntity.getLivreId());
+	@Override
+	public List<ReservationEntity> getAllReservationsByLivre(int livreId) {
+		List<ReservationEntity> reservationEntityList = new ArrayList<>();
+		for(ReservationEntity entity : this.repository.findAll()){
+			if (entity.getLivreId() == livreId){
+				reservationEntityList.add(entity);
+			}
+		}
+		return reservationEntityList;
+	}
 
-            for (ReservationEntity reservation : listeReservations) {
-                if (reservationEntity.getNumPositionResa() < reservation.getNumPositionResa() && reservationEntity.getNumPositionResa() != 0) {
-                    reservation.setNumPositionResa(reservation.getNumPositionResa() - 1);
-                    updateReservation(reservation);
-                }
-            }
-            this.repository.deleteById(id);
-            return true;
-        } catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-    }
+	@Override
+	public List<ReservationEntity> getAllReservationByMembre(int membreId) {
+		List<ReservationEntity> reservationEntityList = new ArrayList<>();
+		for(ReservationEntity entity : this.repository.findAll()){
+			if(entity.getMembreid() == membreId){
+				reservationEntityList.add(entity);
+			}
+		}
+		return reservationEntityList;
+	}
 
-    @Override
-    public List<ReservationEntity> getAllReservationsByLivre(int livreId) {
-        List<ReservationEntity> reservationEntityList = new ArrayList<>();
-        for(ReservationEntity entity : this.repository.findAll()){
-            if (entity.getLivreId() == livreId){
-                reservationEntityList.add(entity);
-            }
-        }
-        return reservationEntityList;
-    }
+	private boolean delaiExpired(ReservationEntity reservationEntity) throws ParseException {
 
-    @Override
-    public List<ReservationEntity> getAllReservationByMembre(int membreId) {
-        List<ReservationEntity> reservationEntityList = new ArrayList<>();
-        for(ReservationEntity entity : this.repository.findAll()){
-            if(entity.getMembreid() == membreId){
-                reservationEntityList.add(entity);
-            }
-        }
-        return reservationEntityList;
-    }
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		int dayOfMonthToday = LocalDate.now().getDayOfMonth();
+		Date dateDispo = dateFormat.parse(reservationEntity.getDateDispo().toString());
+		int dayOfMontDateDispo = reservationEntity.getDateDispo().getDay();
 
-    private boolean delaiExpired(ReservationEntity reservationEntity) throws ParseException {
+		if (dayOfMonthToday == dayOfMontDateDispo) {
+			return false;
+		} else if ((dayOfMonthToday - dayOfMontDateDispo < 2) || (dayOfMonthToday - dayOfMontDateDispo == 2)) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        int dayOfMonthToday = LocalDate.now().getDayOfMonth();
-        Date dateDispo = dateFormat.parse(reservationEntity.getDateDispo().toString());
-        int dayOfMontDateDispo = reservationEntity.getDateDispo().getDay();
-
-        if (dayOfMonthToday == dayOfMontDateDispo) {
-            return false;
-        } else if ((dayOfMonthToday - dayOfMontDateDispo < 2) || (dayOfMonthToday - dayOfMontDateDispo == 2)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public static Date addDays(Date date, int days) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.DATE, days); //minus number would decrement the days
-        return cal.getTime();
-    }
+	public static Date addDays(Date date, int days) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DATE, days); //minus number would decrement the days
+		return cal.getTime();
+	}
 
 
 }

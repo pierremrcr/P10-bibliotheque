@@ -187,22 +187,16 @@ public class ReservationEndpoint {
         reservationEntity.setMembreid(request.getReservationType().getMembreid());
         reservationEntity.setStatut("réservé");
 
-        ReservationEntity savedReservationEntity = reservationEntityService.addReservation(reservationEntity);
+        boolean flag = reservationEntityService.addReservation(reservationEntity);
 
-
-        if(savedReservationEntity == null) {
-
+        if(flag == false) {
             serviceStatus.setStatusCode("CONFLICT");
             serviceStatus.setMessage("Exception while adding Entity");
-
         } else {
-
-            BeanUtils.copyProperties(savedReservationEntity, reservationType);
+           // BeanUtils.copyProperties(savedReservationEntity, reservationType);
             serviceStatus.setStatusCode("SUCCESS");
             serviceStatus.setMessage("Content Added Successfully");
-
         }
-
         response.setReservationType(reservationType);
         response.setServiceStatus(serviceStatus);
 

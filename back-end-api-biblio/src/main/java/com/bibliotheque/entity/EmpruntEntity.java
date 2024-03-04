@@ -45,8 +45,19 @@ public class EmpruntEntity implements Serializable {
 
     public EmpruntEntity() {
     }
+    
+    
+    public EmpruntEntity(int id, Date date_debut, Date date_fin, int membreid) {
+		super();
+		this.id = id;
+		this.date_debut = date_debut;
+		this.date_fin = date_fin;
+		this.membreid = membreid;
+	}
+    
+   
 
-    public int getId() {
+	public int getId() {
         return id;
     }
 

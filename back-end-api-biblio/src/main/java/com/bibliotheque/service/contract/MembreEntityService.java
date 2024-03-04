@@ -9,7 +9,7 @@ public interface MembreEntityService {
     public MembreEntity getMembreById(int id);
     public MembreEntity getMembreByNom(String nom);
     public List<MembreEntity> getAllMembres();
-    public MembreEntity addMembre(MembreEntity membreEntity);
+    public boolean addMembre(MembreEntity membreEntity);
     public boolean updateMembre(MembreEntity membreEntity);
     public boolean deleteMembreById(int id);
 

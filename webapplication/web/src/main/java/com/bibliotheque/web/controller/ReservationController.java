@@ -24,60 +24,60 @@ import java.util.*;
 @Controller
 public class ReservationController {
 
-    @Autowired
-    private ReservationService reservationService;
+	@Autowired
+	private ReservationService reservationService;
 
-    @Autowired
-    private MembreService membreService;
+	@Autowired
+	private MembreService membreService;
 
-    @Autowired
-    private LivreService livreService;
+	@Autowired
+	private LivreService livreService;
 
-    @Autowired
-    private EmpruntService empruntService;
+	@Autowired
+	private EmpruntService empruntService;
 
-   @RequestMapping(value ="/addReservation", method = RequestMethod.GET)
-   public String addReservation(Model model, 
-		   @RequestParam(name="livreId") Integer livreId, 
-		   @RequestParam(name="compteId") Integer compteId) throws ParseException, DatatypeConfigurationException {
+	@RequestMapping(value ="/addReservation", method = RequestMethod.GET)
+	public String addReservation(Model model, 
+			@RequestParam(name="livreId") Integer livreId, 
+			@RequestParam(name="compteId") Integer compteId) throws ParseException, DatatypeConfigurationException {
 
-       List<EmpruntType> listeEmprunts = empruntService.getAllEmpruntsByLivreId(livreId);
-       XMLGregorianCalendar dateFin = null;
+		List<EmpruntType> listeEmprunts = empruntService.getAllEmpruntsByLivreId(livreId);
+		XMLGregorianCalendar dateFin = null;
 
-       if(listeEmprunts.size() >0){
+		if(listeEmprunts.size() >0){
 
-           List<Long> joursRestantsEmprunts = empruntService.joursRestantsEmprunt(listeEmprunts);
+			List<Long> joursRestantsEmprunts = empruntService.joursRestantsEmprunt(listeEmprunts);
 
-            listeEmprunts = empruntService.trieEmpruntsParDateDeFin(listeEmprunts, joursRestantsEmprunts);
-            dateFin = listeEmprunts.get(0).getDateFin();
+			listeEmprunts = empruntService.trieEmpruntsParDateDeFin(listeEmprunts, joursRestantsEmprunts);
+			dateFin = listeEmprunts.get(0).getDateFin();
 
-        }
+		}
 
 
-        MembreType membre = membreService.membreById(compteId);
-        ReservationType reservation = new ReservationType();
-       LivreType livre = livreService.livreById(livreId);
+		MembreType membre = membreService.membreById(compteId);
+		ReservationType reservation = new ReservationType();	
+		LivreType livre = livreService.livreById(livreId);
 
-       GregorianCalendar calendar = dateFin.toGregorianCalendar();
-       calendar.add(Calendar.DAY_OF_MONTH,1);
-       XMLGregorianCalendar dateDispo = DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
+		GregorianCalendar calendar = dateFin.toGregorianCalendar();
+		calendar.add(Calendar.DAY_OF_MONTH,1);
+		XMLGregorianCalendar dateDispo = DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
 
-       reservation.setDateDispo(dateDispo);
-       reservation.setStatut("réservé");
-        reservation.setLivreid(livreId);
-       reservation.setMembreid(compteId);
-       reservationService.addReservation(reservation);
+		reservation.setDateDispo(dateDispo);
+		reservation.setStatut("réservé");
+		reservation.setLivreid(livreId);
+		reservation.setMembreid(compteId);
+		reservationService.addReservation(reservation);
 
-       return "confirmationReservation";
+		return "confirmationReservation";
 
-   }
+	}
 
-    @RequestMapping(value="/annulerReservation", method = RequestMethod.GET)
-    public String annulerReservation(Model model, @RequestParam(name="reservationId") Integer reservationId){
+	@RequestMapping(value="/annulerReservation", method = RequestMethod.GET)
+	public String annulerReservation(Model model, @RequestParam(name="reservationId") Integer reservationId){
 
-        reservationService.deleteReservation(reservationId);
+		reservationService.deleteReservation(reservationId);
 
-        return "confirmationAnnulation";
-    }
+		return "confirmationAnnulation";
+	}
 
 }

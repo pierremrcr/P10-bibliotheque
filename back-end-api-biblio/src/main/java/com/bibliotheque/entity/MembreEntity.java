@@ -1,9 +1,19 @@
 package com.bibliotheque.entity;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="membre")
@@ -44,13 +54,27 @@ public class MembreEntity implements Serializable {
     @Size(min = 1, max = 50)
     private String ville;
 
-    @OneToMany(mappedBy = "membreEntity", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "membreEntity", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<EmpruntEntity> listeEmprunts;
+    
+    @OneToMany(mappedBy = "membreEntity", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<ReservationEntity> listeReservations;
 
     public MembreEntity() {
     }
+    
 
-    public MembreEntity(int id, @Size(min = 1, max = 50) String adresseMail,
+    public MembreEntity(@Size(min = 1, max = 50) String nom, @Size(min = 1, max = 50) String prenom,
+			@Size(min = 1, max = 50) String adresseMail) {
+		super();
+		this.nom = nom;
+		this.prenom = prenom;
+		this.adresseMail = adresseMail;
+	}
+
+
+
+	public MembreEntity(int id, @Size(min = 1, max = 50) String adresseMail,
 			@Size(min = 1, max = 10) String motDePasse) {
 		super();
 		this.id = id;
@@ -137,5 +161,14 @@ public class MembreEntity implements Serializable {
 
     public void setListeEmprunts(List<EmpruntEntity> listeEmprunts) {
         this.listeEmprunts = listeEmprunts;
+        
+    }
+    
+    public Set<ReservationEntity> getListeReservations() {
+        return listeReservations;
+    }
+
+    public void setListeReservations(Set<ReservationEntity> listeReservations) {
+        this.listeReservations = listeReservations;
     }
 }

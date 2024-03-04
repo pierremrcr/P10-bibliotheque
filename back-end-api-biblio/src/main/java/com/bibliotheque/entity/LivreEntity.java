@@ -40,8 +40,11 @@ public class LivreEntity implements Serializable {
     @Size(min = 1, max = 500)
     private String urlPhoto;
 
-    @OneToMany(mappedBy = "livre", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "livreEntity", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<ExemplaireEntity> listeExemplaires;
+    
+    @OneToMany(mappedBy = "livreEntity", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<ReservationEntity> listeReservations;
 
     public LivreEntity() {
     }
@@ -118,6 +121,11 @@ public class LivreEntity implements Serializable {
 
     public void setListeExemplaires(List<ExemplaireEntity> listeExemplaires) {
         this.listeExemplaires = listeExemplaires;
+    }
+    
+    public void addExemplaire(ExemplaireEntity exemplaire) {
+        listeExemplaires.add(exemplaire);
+        exemplaire.setLivreEntity(this);
     }
 
     @Override

@@ -1,13 +1,23 @@
 package com.bibliotheque.repository.repository;
 
-import com.bibliotheque.repository.client.EmpruntClient;
-import livres.wsdl.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
-@Repository
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.bibliotheque.repository.client.EmpruntClient;
+
+import livres.wsdl.AddEmpruntResponse;
+import livres.wsdl.EmpruntType;
+import livres.wsdl.GetAllEmpruntResponse;
+import livres.wsdl.GetAllEmpruntsByLivreIdResponse;
+import livres.wsdl.GetAllEmpruntsWhereDateFinIsBeforeDateTodayResponse;
+import livres.wsdl.GetEmpruntByIdResponse;
+import livres.wsdl.UpdateEmpruntResponse;
+import livres.wsdl.UpdateEmpruntTermineResponse;
+import livres.wsdl.UpdateRelanceEmpruntResponse;
+
+@Component
 public class EmpruntRepository {
 
 

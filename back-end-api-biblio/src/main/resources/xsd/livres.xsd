@@ -271,6 +271,7 @@
             <xs:element name="code_postal" type="xs:string" />
             <xs:element name="ville" type="xs:string" />
             <xs:element name="listeEmprunts" type="tns:empruntType" maxOccurs="unbounded" minOccurs="0" />
+            <xs:element name="listeReservation" type="tns:reservationType" maxOccurs="unbounded" minOccurs="0" />
         </xs:sequence>
     </xs:complexType>
 
